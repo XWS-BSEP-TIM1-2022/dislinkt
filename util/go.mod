@@ -1,4 +1,4 @@
-module util
+module github.com/XWS-BSEP-TIM1-2022/dislinkt/util
 
 go 1.18
 
