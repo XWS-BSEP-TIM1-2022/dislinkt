@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/user";
+
+package user;
+
+message User {
+  string id = 1;
+  string name = 2;
+  string surname = 3;
+  string email = 4;
+  string phoneNumber = 5;
+  bool gender = 6;
+  string birthDate = 7;
+  string username = 8;
+  string password = 9;
+  string bio = 10;
+  string skills = 11;
+  string interests = 12;
+  bool private = 13;
+}

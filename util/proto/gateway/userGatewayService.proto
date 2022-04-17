@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+option go_package = "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/gateway";
+
+package gateway;
+
+import "google/api/annotations.proto";
+import "user/userModel.proto";
+
+service UserGateway {
+  rpc GetRequest (UserIdRequest) returns (user.User){
+    option(google.api.http) = {
+      get: "/users/{userId}"
+    };
+  };
+
+  rpc GetAllRequest (EmptyRequest) returns (GetAllUsers){
+    option(google.api.http) = {
+      get: "/users"
+    };
+  };
+
+  rpc PostRequest (UserRequest) returns (user.User) {
+    option (google.api.http) = {
+      post: "/users"
+      body: "user"
+    };
+  }
+
+  rpc UpdateRequest (UserRequest) returns (user.User) {
+    option (google.api.http) = {
+      put: "/users/{userId}"
+      body: "user"
+    };
+  }
+
+  rpc DeleteRequest (UserIdRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      delete: "/users/{userId}"
+    };
+  };
+}
+
+message UserIdRequest{
+  string userId = 1;
+}
+
+message EmptyRequest{}
+
+message GetAllUsers{
+  repeated user.User users = 1;
+}
+
+message UserRequest{
+  string userId = 1;
+  user.User user = 2;
+}
