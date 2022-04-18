@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+    gateway:
+        image: gateway
+        container_name: gateway
+        build:
+          context: .
+          dockerfile: ./gateway/Dockerfile
+        restart: on-failure
+        ports:
+          - 8090:8090
+        environment:
+          GATEWAY_GRPC_PORT: 8080
+          GATEWAY_HTTP_PORT: 8090
+          USER_SERVICE_HOST: user_service
+          USER_SERVICE_PORT: 8000
+        networks:
+          - network
+    
+    user_service:
+        image: user_service
+        container_name: user_service
+        build:
+          context: .
+          dockerfile: ./user-microservice/Dockerfile
+        restart: on-failure
+        environment:
+          USER_SERVICE_PORT: 8000
+          USER_DB_HOST: userMicroservice:nuEIm8GkSZbm3MKd@xws.cjx50.mongodb.net/usersDB
+          USER_SERVICE_NAME: user_service
+        networks:
+          - network
+    
+      
+networks:
+  network:
+    driver: bridge
