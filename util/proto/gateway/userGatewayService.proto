@@ -8,50 +8,35 @@ import "google/api/annotations.proto";
 import "user/userModel.proto";
 
 service UserGateway {
-  rpc GetRequest (UserIdRequest) returns (user.User){
+  rpc GetRequest (user.UserIdRequest) returns (user.GetResponse){
     option(google.api.http) = {
       get: "/users/{userId}"
     };
   };
 
-  rpc GetAllRequest (EmptyRequest) returns (GetAllUsers){
+  rpc GetAllRequest (user.EmptyRequest) returns (user.GetAllUsers){
     option(google.api.http) = {
       get: "/users"
     };
   };
 
-  rpc PostRequest (UserRequest) returns (user.User) {
+  rpc PostRequest (user.UserRequest) returns (user.GetResponse) {
     option (google.api.http) = {
       post: "/users"
       body: "user"
     };
   }
 
-  rpc UpdateRequest (UserRequest) returns (user.User) {
+  rpc UpdateRequest (user.UserRequest) returns (user.GetResponse) {
     option (google.api.http) = {
       put: "/users/{userId}"
       body: "user"
     };
   }
 
-  rpc DeleteRequest (UserIdRequest) returns (EmptyRequest){
+  rpc DeleteRequest (user.UserIdRequest) returns (user.EmptyRequest){
     option(google.api.http) = {
       delete: "/users/{userId}"
     };
   };
-}
-
-message UserIdRequest{
-  string userId = 1;
-}
-
-message EmptyRequest{}
-
-message GetAllUsers{
-  repeated user.User users = 1;
-}
-
-message UserRequest{
-  string userId = 1;
-  user.User user = 2;
 }

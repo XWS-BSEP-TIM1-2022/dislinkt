@@ -8,7 +8,7 @@ import (
 
 var grpcGatewayTag = otgo.Tag{Key: string(ext.Component), Value: "grpc-gateway"}
 
-func tracingWrapper(h http.Handler) http.Handler {
+func TracingWrapper(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		parentSpanContext, err := otgo.GlobalTracer().Extract(
 			otgo.HTTPHeaders,

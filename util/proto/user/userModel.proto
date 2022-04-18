@@ -15,7 +15,26 @@ message User {
   string username = 8;
   string password = 9;
   string bio = 10;
-  string skills = 11;
-  string interests = 12;
+  repeated string skills = 11;
+  repeated string interests = 12;
   bool private = 13;
+}
+
+message UserIdRequest{
+  string userId = 1;
+}
+
+message GetResponse{
+  user.User user = 1;
+}
+
+message EmptyRequest{}
+
+message GetAllUsers{
+  repeated user.User users = 1;
+}
+
+message UserRequest{
+  string userId = 1;
+  user.User user = 2;
 }

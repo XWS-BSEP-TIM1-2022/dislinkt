@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/user";
+
+package user;
+
+import "user/userModel.proto";
+
+service UserService {
+  rpc GetRequest (user.UserIdRequest) returns (user.GetResponse){};
+
+  rpc GetAllRequest (user.EmptyRequest) returns (user.GetAllUsers){};
+
+  rpc PostRequest (user.UserRequest) returns (user.GetResponse) {}
+
+  rpc UpdateRequest (user.UserRequest) returns (user.GetResponse) {}
+
+  rpc DeleteRequest (user.UserIdRequest) returns (user.EmptyRequest){};
+}

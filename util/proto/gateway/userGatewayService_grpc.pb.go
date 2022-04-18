@@ -23,11 +23,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserGatewayClient interface {
-	GetRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*user.User, error)
-	GetAllRequest(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetAllUsers, error)
-	PostRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*user.User, error)
-	UpdateRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*user.User, error)
-	DeleteRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	GetRequest(ctx context.Context, in *user.UserIdRequest, opts ...grpc.CallOption) (*user.GetResponse, error)
+	GetAllRequest(ctx context.Context, in *user.EmptyRequest, opts ...grpc.CallOption) (*user.GetAllUsers, error)
+	PostRequest(ctx context.Context, in *user.UserRequest, opts ...grpc.CallOption) (*user.GetResponse, error)
+	UpdateRequest(ctx context.Context, in *user.UserRequest, opts ...grpc.CallOption) (*user.GetResponse, error)
+	DeleteRequest(ctx context.Context, in *user.UserIdRequest, opts ...grpc.CallOption) (*user.EmptyRequest, error)
 }
 
 type userGatewayClient struct {
@@ -38,8 +38,8 @@ func NewUserGatewayClient(cc grpc.ClientConnInterface) UserGatewayClient {
 	return &userGatewayClient{cc}
 }
 
-func (c *userGatewayClient) GetRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*user.User, error) {
-	out := new(user.User)
+func (c *userGatewayClient) GetRequest(ctx context.Context, in *user.UserIdRequest, opts ...grpc.CallOption) (*user.GetResponse, error) {
+	out := new(user.GetResponse)
 	err := c.cc.Invoke(ctx, "/gateway.UserGateway/GetRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -47,8 +47,8 @@ func (c *userGatewayClient) GetRequest(ctx context.Context, in *UserIdRequest, o
 	return out, nil
 }
 
-func (c *userGatewayClient) GetAllRequest(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetAllUsers, error) {
-	out := new(GetAllUsers)
+func (c *userGatewayClient) GetAllRequest(ctx context.Context, in *user.EmptyRequest, opts ...grpc.CallOption) (*user.GetAllUsers, error) {
+	out := new(user.GetAllUsers)
 	err := c.cc.Invoke(ctx, "/gateway.UserGateway/GetAllRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -56,8 +56,8 @@ func (c *userGatewayClient) GetAllRequest(ctx context.Context, in *EmptyRequest,
 	return out, nil
 }
 
-func (c *userGatewayClient) PostRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*user.User, error) {
-	out := new(user.User)
+func (c *userGatewayClient) PostRequest(ctx context.Context, in *user.UserRequest, opts ...grpc.CallOption) (*user.GetResponse, error) {
+	out := new(user.GetResponse)
 	err := c.cc.Invoke(ctx, "/gateway.UserGateway/PostRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -65,8 +65,8 @@ func (c *userGatewayClient) PostRequest(ctx context.Context, in *UserRequest, op
 	return out, nil
 }
 
-func (c *userGatewayClient) UpdateRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*user.User, error) {
-	out := new(user.User)
+func (c *userGatewayClient) UpdateRequest(ctx context.Context, in *user.UserRequest, opts ...grpc.CallOption) (*user.GetResponse, error) {
+	out := new(user.GetResponse)
 	err := c.cc.Invoke(ctx, "/gateway.UserGateway/UpdateRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -74,8 +74,8 @@ func (c *userGatewayClient) UpdateRequest(ctx context.Context, in *UserRequest, 
 	return out, nil
 }
 
-func (c *userGatewayClient) DeleteRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
-	out := new(EmptyRequest)
+func (c *userGatewayClient) DeleteRequest(ctx context.Context, in *user.UserIdRequest, opts ...grpc.CallOption) (*user.EmptyRequest, error) {
+	out := new(user.EmptyRequest)
 	err := c.cc.Invoke(ctx, "/gateway.UserGateway/DeleteRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -87,11 +87,11 @@ func (c *userGatewayClient) DeleteRequest(ctx context.Context, in *UserIdRequest
 // All implementations must embed UnimplementedUserGatewayServer
 // for forward compatibility
 type UserGatewayServer interface {
-	GetRequest(context.Context, *UserIdRequest) (*user.User, error)
-	GetAllRequest(context.Context, *EmptyRequest) (*GetAllUsers, error)
-	PostRequest(context.Context, *UserRequest) (*user.User, error)
-	UpdateRequest(context.Context, *UserRequest) (*user.User, error)
-	DeleteRequest(context.Context, *UserIdRequest) (*EmptyRequest, error)
+	GetRequest(context.Context, *user.UserIdRequest) (*user.GetResponse, error)
+	GetAllRequest(context.Context, *user.EmptyRequest) (*user.GetAllUsers, error)
+	PostRequest(context.Context, *user.UserRequest) (*user.GetResponse, error)
+	UpdateRequest(context.Context, *user.UserRequest) (*user.GetResponse, error)
+	DeleteRequest(context.Context, *user.UserIdRequest) (*user.EmptyRequest, error)
 	mustEmbedUnimplementedUserGatewayServer()
 }
 
@@ -99,19 +99,19 @@ type UserGatewayServer interface {
 type UnimplementedUserGatewayServer struct {
 }
 
-func (UnimplementedUserGatewayServer) GetRequest(context.Context, *UserIdRequest) (*user.User, error) {
+func (UnimplementedUserGatewayServer) GetRequest(context.Context, *user.UserIdRequest) (*user.GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRequest not implemented")
 }
-func (UnimplementedUserGatewayServer) GetAllRequest(context.Context, *EmptyRequest) (*GetAllUsers, error) {
+func (UnimplementedUserGatewayServer) GetAllRequest(context.Context, *user.EmptyRequest) (*user.GetAllUsers, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllRequest not implemented")
 }
-func (UnimplementedUserGatewayServer) PostRequest(context.Context, *UserRequest) (*user.User, error) {
+func (UnimplementedUserGatewayServer) PostRequest(context.Context, *user.UserRequest) (*user.GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PostRequest not implemented")
 }
-func (UnimplementedUserGatewayServer) UpdateRequest(context.Context, *UserRequest) (*user.User, error) {
+func (UnimplementedUserGatewayServer) UpdateRequest(context.Context, *user.UserRequest) (*user.GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateRequest not implemented")
 }
-func (UnimplementedUserGatewayServer) DeleteRequest(context.Context, *UserIdRequest) (*EmptyRequest, error) {
+func (UnimplementedUserGatewayServer) DeleteRequest(context.Context, *user.UserIdRequest) (*user.EmptyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRequest not implemented")
 }
 func (UnimplementedUserGatewayServer) mustEmbedUnimplementedUserGatewayServer() {}
@@ -128,7 +128,7 @@ func RegisterUserGatewayServer(s grpc.ServiceRegistrar, srv UserGatewayServer) {
 }
 
 func _UserGateway_GetRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserIdRequest)
+	in := new(user.UserIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -140,13 +140,13 @@ func _UserGateway_GetRequest_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/gateway.UserGateway/GetRequest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserGatewayServer).GetRequest(ctx, req.(*UserIdRequest))
+		return srv.(UserGatewayServer).GetRequest(ctx, req.(*user.UserIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserGateway_GetAllRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyRequest)
+	in := new(user.EmptyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -158,13 +158,13 @@ func _UserGateway_GetAllRequest_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/gateway.UserGateway/GetAllRequest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserGatewayServer).GetAllRequest(ctx, req.(*EmptyRequest))
+		return srv.(UserGatewayServer).GetAllRequest(ctx, req.(*user.EmptyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserGateway_PostRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserRequest)
+	in := new(user.UserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -176,13 +176,13 @@ func _UserGateway_PostRequest_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: "/gateway.UserGateway/PostRequest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserGatewayServer).PostRequest(ctx, req.(*UserRequest))
+		return srv.(UserGatewayServer).PostRequest(ctx, req.(*user.UserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserGateway_UpdateRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserRequest)
+	in := new(user.UserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -194,13 +194,13 @@ func _UserGateway_UpdateRequest_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/gateway.UserGateway/UpdateRequest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserGatewayServer).UpdateRequest(ctx, req.(*UserRequest))
+		return srv.(UserGatewayServer).UpdateRequest(ctx, req.(*user.UserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserGateway_DeleteRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserIdRequest)
+	in := new(user.UserIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -212,7 +212,7 @@ func _UserGateway_DeleteRequest_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/gateway.UserGateway/DeleteRequest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserGatewayServer).DeleteRequest(ctx, req.(*UserIdRequest))
+		return srv.(UserGatewayServer).DeleteRequest(ctx, req.(*user.UserIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -13,6 +13,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/user"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -32,7 +33,7 @@ var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
 func request_UserGateway_GetRequest_0(ctx context.Context, marshaler runtime.Marshaler, client UserGatewayClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserIdRequest
+	var protoReq user.UserIdRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -58,7 +59,7 @@ func request_UserGateway_GetRequest_0(ctx context.Context, marshaler runtime.Mar
 }
 
 func local_request_UserGateway_GetRequest_0(ctx context.Context, marshaler runtime.Marshaler, server UserGatewayServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserIdRequest
+	var protoReq user.UserIdRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -84,7 +85,7 @@ func local_request_UserGateway_GetRequest_0(ctx context.Context, marshaler runti
 }
 
 func request_UserGateway_GetAllRequest_0(ctx context.Context, marshaler runtime.Marshaler, client UserGatewayClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq EmptyRequest
+	var protoReq user.EmptyRequest
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.GetAllRequest(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -93,7 +94,7 @@ func request_UserGateway_GetAllRequest_0(ctx context.Context, marshaler runtime.
 }
 
 func local_request_UserGateway_GetAllRequest_0(ctx context.Context, marshaler runtime.Marshaler, server UserGatewayServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq EmptyRequest
+	var protoReq user.EmptyRequest
 	var metadata runtime.ServerMetadata
 
 	msg, err := server.GetAllRequest(ctx, &protoReq)
@@ -106,7 +107,7 @@ var (
 )
 
 func request_UserGateway_PostRequest_0(ctx context.Context, marshaler runtime.Marshaler, client UserGatewayClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserRequest
+	var protoReq user.UserRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -130,7 +131,7 @@ func request_UserGateway_PostRequest_0(ctx context.Context, marshaler runtime.Ma
 }
 
 func local_request_UserGateway_PostRequest_0(ctx context.Context, marshaler runtime.Marshaler, server UserGatewayServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserRequest
+	var protoReq user.UserRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -154,7 +155,7 @@ func local_request_UserGateway_PostRequest_0(ctx context.Context, marshaler runt
 }
 
 func request_UserGateway_UpdateRequest_0(ctx context.Context, marshaler runtime.Marshaler, client UserGatewayClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserRequest
+	var protoReq user.UserRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -188,7 +189,7 @@ func request_UserGateway_UpdateRequest_0(ctx context.Context, marshaler runtime.
 }
 
 func local_request_UserGateway_UpdateRequest_0(ctx context.Context, marshaler runtime.Marshaler, server UserGatewayServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserRequest
+	var protoReq user.UserRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -222,7 +223,7 @@ func local_request_UserGateway_UpdateRequest_0(ctx context.Context, marshaler ru
 }
 
 func request_UserGateway_DeleteRequest_0(ctx context.Context, marshaler runtime.Marshaler, client UserGatewayClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserIdRequest
+	var protoReq user.UserIdRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -248,7 +249,7 @@ func request_UserGateway_DeleteRequest_0(ctx context.Context, marshaler runtime.
 }
 
 func local_request_UserGateway_DeleteRequest_0(ctx context.Context, marshaler runtime.Marshaler, server UserGatewayServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserIdRequest
+	var protoReq user.UserIdRequest
 	var metadata runtime.ServerMetadata
 
 	var (
