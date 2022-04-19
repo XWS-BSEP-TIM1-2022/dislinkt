@@ -49,3 +49,13 @@ services:
           - USER_DB_HOST=userMicroservice:nuEIm8GkSZbm3MKd@xws.cjx50.mongodb.net/usersDB
           - USER_SERVICE_NAME=user_service
     
+    # dislinkt-frontend:
+        # image: dislinkt-frontend
+        # container_name: dislinkt-frontend
+        # build:
+          # context: .
+          # dockerfile: ./dislinkt-frontend/Dockerfile
+        # restart: always
+        # ports:
+          # - 4200:80
+        
