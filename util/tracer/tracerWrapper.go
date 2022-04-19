@@ -1,9 +1,11 @@
 package tracer
 
 import (
+	"github.com/golang/glog"
 	otgo "github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/ext"
 	"net/http"
+	"strings"
 )
 
 var grpcGatewayTag = otgo.Tag{Key: string(ext.Component), Value: "grpc-gateway"}
@@ -23,6 +25,24 @@ func TracingWrapper(h http.Handler) http.Handler {
 			r = r.WithContext(otgo.ContextWithSpan(r.Context(), serverSpan))
 			defer serverSpan.Finish()
 		}
+
+		if origin := r.Header.Get("Origin"); origin != "" {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			if r.Method == "OPTIONS" && r.Header.Get("Access-Control-Request-Method") != "" {
+				preflightHandler(w, r)
+				return
+			}
+		}
+
 		h.ServeHTTP(w, r)
 	})
+}
+
+func preflightHandler(w http.ResponseWriter, r *http.Request) {
+	headers := []string{"Content-Type", "Accept"}
+	w.Header().Set("Access-Control-Allow-Headers", strings.Join(headers, ","))
+	methods := []string{"GET", "HEAD", "POST", "PUT", "DELETE"}
+	w.Header().Set("Access-Control-Allow-Methods", strings.Join(methods, ","))
+	glog.Infof("preflight request for %s", r.URL.Path)
+	return
 }
