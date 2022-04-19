@@ -1,22 +1,35 @@
 version: "3.8"
 
-services:
+services:  
+    tracing:
+        image: jaegertracing/all-in-one
+        container_name: jaeger
+        ports:
+          - "6831:6831/udp"
+          - "6832:6832/udp"
+          - "16686:16686"
+          - "14268:14268"
+          - "14250:14250"
     gateway:
         image: gateway
         container_name: gateway
         build:
           context: .
           dockerfile: ./gateway/Dockerfile
-        restart: on-failure
+        restart: always
         ports:
           - 8090:8090
         environment:
-          GATEWAY_GRPC_PORT: 8080
-          GATEWAY_HTTP_PORT: 8090
-          USER_SERVICE_HOST: user_service
-          USER_SERVICE_PORT: 8000
-        networks:
-          - network
+          - JAEGER_SERVICE_NAME=posts
+          - JAEGER_AGENT_HOST=tracing
+          - JAEGER_AGENT_PORT=6831
+          - JAEGER_SAMPLER_MANAGER_HOST_PORT=jaeger:5778
+          - JAEGER_SAMPLER_TYPE=const
+          - JAEGER_SAMPLER_PARAM=1
+          - GATEWAY_GRPC_PORT=8080
+          - GATEWAY_HTTP_PORT=8090
+          - USER_SERVICE_HOST=user_service
+          - USER_SERVICE_PORT=8000
     
     user_service:
         image: user_service
@@ -24,15 +37,15 @@ services:
         build:
           context: .
           dockerfile: ./user-microservice/Dockerfile
-        restart: on-failure
+        restart: always
         environment:
-          USER_SERVICE_PORT: 8000
-          USER_DB_HOST: userMicroservice:nuEIm8GkSZbm3MKd@xws.cjx50.mongodb.net/usersDB
-          USER_SERVICE_NAME: user_service
-        networks:
-          - network
+          - JAEGER_SERVICE_NAME=user_service
+          - JAEGER_AGENT_HOST=tracing
+          - JAEGER_AGENT_PORT=6831
+          - JAEGER_SAMPLER_MANAGER_HOST_PORT=jaeger:5778
+          - JAEGER_SAMPLER_TYPE=const
+          - JAEGER_SAMPLER_PARAM=1
+          - USER_SERVICE_PORT=8000
+          - USER_DB_HOST=userMicroservice:nuEIm8GkSZbm3MKd@xws.cjx50.mongodb.net/usersDB
+          - USER_SERVICE_NAME=user_service
     
-      
-networks:
-  network:
-    driver: bridge
