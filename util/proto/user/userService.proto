@@ -7,37 +7,51 @@ package user;
 import "google/api/annotations.proto";
 
 service UserService {
-  rpc GetRequest (user.UserIdRequest) returns (user.GetResponse){
+  rpc GetRequest (UserIdRequest) returns (GetResponse){
     option(google.api.http) = {
       get: "/users/{userId}"
     };
   };
 
-  rpc GetAllRequest (user.EmptyRequest) returns (user.GetAllUsers){
+  rpc GetAllRequest (EmptyRequest) returns (GetAllUsers){
     option(google.api.http) = {
       get: "/users"
     };
   };
 
-  rpc PostRequest (user.UserRequest) returns (user.GetResponse) {
+  rpc PostRequest (UserRequest) returns (GetResponse) {
     option (google.api.http) = {
       post: "/users"
       body: "user"
     };
   }
 
-  rpc UpdateRequest (user.UserRequest) returns (user.GetResponse) {
+  rpc PostAdminRequest (UserRequest) returns (GetResponse) {
+    option (google.api.http) = {
+      post: "/users/admin"
+      body: "user"
+    };
+  }
+
+  rpc UpdateRequest (UserRequest) returns (GetResponse) {
     option (google.api.http) = {
       put: "/users/{userId}"
       body: "user"
     };
   }
 
-  rpc DeleteRequest (user.UserIdRequest) returns (user.EmptyRequest){
+  rpc DeleteRequest (UserIdRequest) returns (EmptyRequest){
     option(google.api.http) = {
       delete: "/users/{userId}"
     };
   };
+
+  rpc LoginRequest (CredentialsRequest) returns (LoginResponse){
+    option (google.api.http) = {
+      post: "/auth/login"
+      body: "credentials"
+    };
+  }
 }
 
 
@@ -55,6 +69,7 @@ message User {
   repeated string skills = 11;
   repeated string interests = 12;
   bool private = 13;
+  string role = 14;
 }
 
 message UserIdRequest{
@@ -62,16 +77,32 @@ message UserIdRequest{
 }
 
 message GetResponse{
-  user.User user = 1;
+  User user = 1;
 }
 
 message EmptyRequest{}
 
 message GetAllUsers{
-  repeated user.User users = 1;
+  repeated User users = 1;
 }
 
 message UserRequest{
   string userId = 1;
-  user.User user = 2;
+  User user = 2;
+}
+
+message Credentials{
+  string username = 1;
+  string password = 2;
+}
+
+message CredentialsRequest{
+  Credentials credentials = 1;
+}
+
+message LoginResponse{
+  string token = 1;
+  string role = 2;
+  string userId = 3;
+  string email = 4;
 }

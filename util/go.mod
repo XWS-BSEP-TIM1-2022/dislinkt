@@ -3,6 +3,8 @@ module github.com/XWS-BSEP-TIM1-2022/dislinkt/util
 go 1.18
 
 require (
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/golang/glog v1.0.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.0
 	github.com/opentracing/opentracing-go v1.2.0

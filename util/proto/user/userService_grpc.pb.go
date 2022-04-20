@@ -25,8 +25,10 @@ type UserServiceClient interface {
 	GetRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	GetAllRequest(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetAllUsers, error)
 	PostRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	PostAdminRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	UpdateRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	DeleteRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	LoginRequest(ctx context.Context, in *CredentialsRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 }
 
 type userServiceClient struct {
@@ -64,6 +66,15 @@ func (c *userServiceClient) PostRequest(ctx context.Context, in *UserRequest, op
 	return out, nil
 }
 
+func (c *userServiceClient) PostAdminRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*GetResponse, error) {
+	out := new(GetResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/PostAdminRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userServiceClient) UpdateRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*GetResponse, error) {
 	out := new(GetResponse)
 	err := c.cc.Invoke(ctx, "/user.UserService/UpdateRequest", in, out, opts...)
@@ -82,6 +93,15 @@ func (c *userServiceClient) DeleteRequest(ctx context.Context, in *UserIdRequest
 	return out, nil
 }
 
+func (c *userServiceClient) LoginRequest(ctx context.Context, in *CredentialsRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/LoginRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -89,8 +109,10 @@ type UserServiceServer interface {
 	GetRequest(context.Context, *UserIdRequest) (*GetResponse, error)
 	GetAllRequest(context.Context, *EmptyRequest) (*GetAllUsers, error)
 	PostRequest(context.Context, *UserRequest) (*GetResponse, error)
+	PostAdminRequest(context.Context, *UserRequest) (*GetResponse, error)
 	UpdateRequest(context.Context, *UserRequest) (*GetResponse, error)
 	DeleteRequest(context.Context, *UserIdRequest) (*EmptyRequest, error)
+	LoginRequest(context.Context, *CredentialsRequest) (*LoginResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -107,11 +129,17 @@ func (UnimplementedUserServiceServer) GetAllRequest(context.Context, *EmptyReque
 func (UnimplementedUserServiceServer) PostRequest(context.Context, *UserRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PostRequest not implemented")
 }
+func (UnimplementedUserServiceServer) PostAdminRequest(context.Context, *UserRequest) (*GetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostAdminRequest not implemented")
+}
 func (UnimplementedUserServiceServer) UpdateRequest(context.Context, *UserRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateRequest not implemented")
 }
 func (UnimplementedUserServiceServer) DeleteRequest(context.Context, *UserIdRequest) (*EmptyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRequest not implemented")
+}
+func (UnimplementedUserServiceServer) LoginRequest(context.Context, *CredentialsRequest) (*LoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginRequest not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -180,6 +208,24 @@ func _UserService_PostRequest_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_PostAdminRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).PostAdminRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/PostAdminRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).PostAdminRequest(ctx, req.(*UserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserService_UpdateRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserRequest)
 	if err := dec(in); err != nil {
@@ -216,6 +262,24 @@ func _UserService_DeleteRequest_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_LoginRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CredentialsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).LoginRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/LoginRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).LoginRequest(ctx, req.(*CredentialsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -236,12 +300,20 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserService_PostRequest_Handler,
 		},
 		{
+			MethodName: "PostAdminRequest",
+			Handler:    _UserService_PostAdminRequest_Handler,
+		},
+		{
 			MethodName: "UpdateRequest",
 			Handler:    _UserService_UpdateRequest_Handler,
 		},
 		{
 			MethodName: "DeleteRequest",
 			Handler:    _UserService_DeleteRequest_Handler,
+		},
+		{
+			MethodName: "LoginRequest",
+			Handler:    _UserService_LoginRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
