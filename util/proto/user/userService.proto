@@ -4,16 +4,74 @@ option go_package = "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/user";
 
 package user;
 
-import "user/userModel.proto";
+import "google/api/annotations.proto";
 
 service UserService {
-  rpc GetRequest (user.UserIdRequest) returns (user.GetResponse){};
+  rpc GetRequest (user.UserIdRequest) returns (user.GetResponse){
+    option(google.api.http) = {
+      get: "/users/{userId}"
+    };
+  };
 
-  rpc GetAllRequest (user.EmptyRequest) returns (user.GetAllUsers){};
+  rpc GetAllRequest (user.EmptyRequest) returns (user.GetAllUsers){
+    option(google.api.http) = {
+      get: "/users"
+    };
+  };
 
-  rpc PostRequest (user.UserRequest) returns (user.GetResponse) {}
+  rpc PostRequest (user.UserRequest) returns (user.GetResponse) {
+    option (google.api.http) = {
+      post: "/users"
+      body: "user"
+    };
+  }
 
-  rpc UpdateRequest (user.UserRequest) returns (user.GetResponse) {}
+  rpc UpdateRequest (user.UserRequest) returns (user.GetResponse) {
+    option (google.api.http) = {
+      put: "/users/{userId}"
+      body: "user"
+    };
+  }
 
-  rpc DeleteRequest (user.UserIdRequest) returns (user.EmptyRequest){};
+  rpc DeleteRequest (user.UserIdRequest) returns (user.EmptyRequest){
+    option(google.api.http) = {
+      delete: "/users/{userId}"
+    };
+  };
+}
+
+
+message User {
+  string id = 1;
+  string name = 2;
+  string surname = 3;
+  string email = 4;
+  string phoneNumber = 5;
+  bool gender = 6;
+  string birthDate = 7;
+  string username = 8;
+  string password = 9;
+  string bio = 10;
+  repeated string skills = 11;
+  repeated string interests = 12;
+  bool private = 13;
+}
+
+message UserIdRequest{
+  string userId = 1;
+}
+
+message GetResponse{
+  user.User user = 1;
+}
+
+message EmptyRequest{}
+
+message GetAllUsers{
+  repeated user.User users = 1;
+}
+
+message UserRequest{
+  string userId = 1;
+  user.User user = 2;
 }
