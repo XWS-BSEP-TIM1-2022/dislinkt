@@ -28,6 +28,7 @@ type UserServiceClient interface {
 	PostAdminRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	UpdateRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	DeleteRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	SearchUsersRequest(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*UsersResponse, error)
 	LoginRequest(ctx context.Context, in *CredentialsRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 }
 
@@ -93,6 +94,15 @@ func (c *userServiceClient) DeleteRequest(ctx context.Context, in *UserIdRequest
 	return out, nil
 }
 
+func (c *userServiceClient) SearchUsersRequest(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*UsersResponse, error) {
+	out := new(UsersResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/SearchUsersRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userServiceClient) LoginRequest(ctx context.Context, in *CredentialsRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
 	out := new(LoginResponse)
 	err := c.cc.Invoke(ctx, "/user.UserService/LoginRequest", in, out, opts...)
@@ -112,6 +122,7 @@ type UserServiceServer interface {
 	PostAdminRequest(context.Context, *UserRequest) (*GetResponse, error)
 	UpdateRequest(context.Context, *UserRequest) (*GetResponse, error)
 	DeleteRequest(context.Context, *UserIdRequest) (*EmptyRequest, error)
+	SearchUsersRequest(context.Context, *SearchRequest) (*UsersResponse, error)
 	LoginRequest(context.Context, *CredentialsRequest) (*LoginResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
@@ -137,6 +148,9 @@ func (UnimplementedUserServiceServer) UpdateRequest(context.Context, *UserReques
 }
 func (UnimplementedUserServiceServer) DeleteRequest(context.Context, *UserIdRequest) (*EmptyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRequest not implemented")
+}
+func (UnimplementedUserServiceServer) SearchUsersRequest(context.Context, *SearchRequest) (*UsersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchUsersRequest not implemented")
 }
 func (UnimplementedUserServiceServer) LoginRequest(context.Context, *CredentialsRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginRequest not implemented")
@@ -262,6 +276,24 @@ func _UserService_DeleteRequest_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_SearchUsersRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).SearchUsersRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/SearchUsersRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).SearchUsersRequest(ctx, req.(*SearchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserService_LoginRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CredentialsRequest)
 	if err := dec(in); err != nil {
@@ -310,6 +342,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteRequest",
 			Handler:    _UserService_DeleteRequest_Handler,
+		},
+		{
+			MethodName: "SearchUsersRequest",
+			Handler:    _UserService_SearchUsersRequest_Handler,
 		},
 		{
 			MethodName: "LoginRequest",
