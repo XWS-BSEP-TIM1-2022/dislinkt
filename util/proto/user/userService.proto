@@ -13,7 +13,7 @@ service UserService {
     };
   };
 
-  rpc GetAllRequest (EmptyRequest) returns (GetAllUsers){
+  rpc GetAllRequest (EmptyRequest) returns (UsersResponse){
     option(google.api.http) = {
       get: "/users"
     };
@@ -61,15 +61,16 @@ message User {
   string surname = 3;
   string email = 4;
   string phoneNumber = 5;
-  bool gender = 6;
+  int64 gender = 6;
   string birthDate = 7;
   string username = 8;
   string password = 9;
-  string bio = 10;
-  repeated string skills = 11;
-  repeated string interests = 12;
-  bool private = 13;
-  string role = 14;
+  string confirmPassword = 10;
+  string bio = 11;
+  repeated string skills = 12;
+  repeated string interests = 13;
+  bool private = 14;
+  string role = 15;
 }
 
 message UserIdRequest{
@@ -82,7 +83,7 @@ message GetResponse{
 
 message EmptyRequest{}
 
-message GetAllUsers{
+message UsersResponse{
   repeated User users = 1;
 }
 

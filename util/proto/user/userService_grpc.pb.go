@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
 	GetRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*GetResponse, error)
-	GetAllRequest(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetAllUsers, error)
+	GetAllRequest(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*UsersResponse, error)
 	PostRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	PostAdminRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	UpdateRequest(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*GetResponse, error)
@@ -48,8 +48,8 @@ func (c *userServiceClient) GetRequest(ctx context.Context, in *UserIdRequest, o
 	return out, nil
 }
 
-func (c *userServiceClient) GetAllRequest(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetAllUsers, error) {
-	out := new(GetAllUsers)
+func (c *userServiceClient) GetAllRequest(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*UsersResponse, error) {
+	out := new(UsersResponse)
 	err := c.cc.Invoke(ctx, "/user.UserService/GetAllRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -107,7 +107,7 @@ func (c *userServiceClient) LoginRequest(ctx context.Context, in *CredentialsReq
 // for forward compatibility
 type UserServiceServer interface {
 	GetRequest(context.Context, *UserIdRequest) (*GetResponse, error)
-	GetAllRequest(context.Context, *EmptyRequest) (*GetAllUsers, error)
+	GetAllRequest(context.Context, *EmptyRequest) (*UsersResponse, error)
 	PostRequest(context.Context, *UserRequest) (*GetResponse, error)
 	PostAdminRequest(context.Context, *UserRequest) (*GetResponse, error)
 	UpdateRequest(context.Context, *UserRequest) (*GetResponse, error)
@@ -123,7 +123,7 @@ type UnimplementedUserServiceServer struct {
 func (UnimplementedUserServiceServer) GetRequest(context.Context, *UserIdRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRequest not implemented")
 }
-func (UnimplementedUserServiceServer) GetAllRequest(context.Context, *EmptyRequest) (*GetAllUsers, error) {
+func (UnimplementedUserServiceServer) GetAllRequest(context.Context, *EmptyRequest) (*UsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllRequest not implemented")
 }
 func (UnimplementedUserServiceServer) PostRequest(context.Context, *UserRequest) (*GetResponse, error) {
