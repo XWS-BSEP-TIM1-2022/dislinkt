@@ -7,19 +7,65 @@ package post;
 import "google/api/annotations.proto";
 
 service PostService {
-  rpc GetAllRequest (EmptyRequest) returns (PostsResponse){
+  rpc GetRequest (PostIdRequest) returns (PostResponse) {
     option(google.api.http) = {
-      get: "/users"
+      get: "/posts/{id}"
+    };
+  };
+
+  rpc GetAllRequest (EmptyRequest) returns (PostsResponse) {
+    option(google.api.http) = {
+      get: "/posts"
+    };
+  };
+
+  rpc GetAllFromUserRequest (UserPostsRequest) returns (PostsResponse) {
+    option(google.api.http) = {
+      get: "/users/{userId}/posts"
+    };
+  };
+
+  rpc CreateRequest (PostRequest) returns (PostResponse) {
+    option(google.api.http) = {
+      post: "/posts"
+      body: "post"
+    };
+  };
+
+  rpc DeleteRequest (PostIdRequest) returns (EmptyRequest) {
+    option (google.api.http) = {
+      delete: "/posts/{id}"
     };
   };
 }
 
 message Post {
   string id = 1;
+  string userId = 2;
+  string text = 3;
+  repeated string links = 4;
+  string creationDate = 5;
 }
 
-message EmptyRequest{}
+message PostIdRequest {
+  string id = 1;
+}
 
-message PostsResponse{
+message UserPostsRequest {
+  string userId = 1;
+}
+
+message PostResponse {
+  Post post = 1;
+}
+
+message EmptyRequest {}
+
+message PostsResponse {
   repeated Post posts = 1;
+}
+
+message PostRequest {
+  string id = 1;
+  Post post = 2;
 }
