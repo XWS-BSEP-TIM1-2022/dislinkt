@@ -728,6 +728,116 @@ func (x *AuthResponse) GetUserRole() string {
 	return ""
 }
 
+type NewPasswordRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	NewPassword *NewPassword `protobuf:"bytes,1,opt,name=newPassword,proto3" json:"newPassword,omitempty"`
+}
+
+func (x *NewPasswordRequest) Reset() {
+	*x = NewPasswordRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_userService_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *NewPasswordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NewPasswordRequest) ProtoMessage() {}
+
+func (x *NewPasswordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_userService_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NewPasswordRequest.ProtoReflect.Descriptor instead.
+func (*NewPasswordRequest) Descriptor() ([]byte, []int) {
+	return file_user_userService_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *NewPasswordRequest) GetNewPassword() *NewPassword {
+	if x != nil {
+		return x.NewPassword
+	}
+	return nil
+}
+
+type NewPassword struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserId      string `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	Password    string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	OldPassword string `protobuf:"bytes,3,opt,name=oldPassword,proto3" json:"oldPassword,omitempty"`
+}
+
+func (x *NewPassword) Reset() {
+	*x = NewPassword{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_userService_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *NewPassword) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NewPassword) ProtoMessage() {}
+
+func (x *NewPassword) ProtoReflect() protoreflect.Message {
+	mi := &file_user_userService_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NewPassword.ProtoReflect.Descriptor instead.
+func (*NewPassword) Descriptor() ([]byte, []int) {
+	return file_user_userService_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *NewPassword) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *NewPassword) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *NewPassword) GetOldPassword() string {
+	if x != nil {
+		return x.OldPassword
+	}
+	return ""
+}
+
 var File_user_userService_proto protoreflect.FileDescriptor
 
 var file_user_userService_proto_rawDesc = []byte{
@@ -798,7 +908,18 @@ var file_user_userService_proto_rawDesc = []byte{
 	0x6f, 0x6b, 0x65, 0x6e, 0x22, 0x2a, 0x0a, 0x0c, 0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x73, 0x70,
 	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x75, 0x73, 0x65, 0x72, 0x52, 0x6f, 0x6c, 0x65,
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x75, 0x73, 0x65, 0x72, 0x52, 0x6f, 0x6c, 0x65,
-	0x32, 0xf5, 0x05, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x22, 0x49, 0x0a, 0x12, 0x4e, 0x65, 0x77, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x33, 0x0a, 0x0b, 0x6e, 0x65, 0x77, 0x50, 0x61, 0x73,
+	0x73, 0x77, 0x6f, 0x72, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x11, 0x2e, 0x75, 0x73,
+	0x65, 0x72, 0x2e, 0x4e, 0x65, 0x77, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x52, 0x0b,
+	0x6e, 0x65, 0x77, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x22, 0x63, 0x0a, 0x0b, 0x4e,
+	0x65, 0x77, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x75, 0x73,
+	0x65, 0x72, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72,
+	0x49, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x12, 0x20,
+	0x0a, 0x0b, 0x6f, 0x6c, 0x64, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x18, 0x03, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x0b, 0x6f, 0x6c, 0x64, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64,
+	0x32, 0xd8, 0x06, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
 	0x12, 0x4d, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x13,
 	0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x49, 0x64, 0x52, 0x65, 0x71, 0x75,
 	0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65,
@@ -845,11 +966,17 @@ var file_user_userService_proto_rawDesc = []byte{
 	0x65, 0x64, 0x12, 0x11, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x41, 0x75, 0x74, 0x68, 0x52, 0x65,
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x12, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x41, 0x75, 0x74,
 	0x68, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x0d, 0x82, 0xd3, 0xe4, 0x93, 0x02,
-	0x07, 0x12, 0x05, 0x2f, 0x61, 0x75, 0x74, 0x68, 0x42, 0x38, 0x5a, 0x36, 0x67, 0x69, 0x74, 0x68,
-	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x58, 0x57, 0x53, 0x2d, 0x42, 0x53, 0x45, 0x50, 0x2d,
-	0x54, 0x49, 0x4d, 0x31, 0x2d, 0x32, 0x30, 0x32, 0x32, 0x2f, 0x64, 0x69, 0x73, 0x6c, 0x69, 0x6e,
-	0x6b, 0x74, 0x2f, 0x75, 0x74, 0x69, 0x6c, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x75, 0x73,
-	0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x07, 0x12, 0x05, 0x2f, 0x61, 0x75, 0x74, 0x68, 0x12, 0x61, 0x0a, 0x15, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x18, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x4e, 0x65, 0x77, 0x50, 0x61, 0x73, 0x73,
+	0x77, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x75, 0x73,
+	0x65, 0x72, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1b,
+	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x15, 0x1a, 0x06, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x73, 0x3a, 0x0b,
+	0x6e, 0x65, 0x77, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x42, 0x38, 0x5a, 0x36, 0x67,
+	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x58, 0x57, 0x53, 0x2d, 0x42, 0x53,
+	0x45, 0x50, 0x2d, 0x54, 0x49, 0x4d, 0x31, 0x2d, 0x32, 0x30, 0x32, 0x32, 0x2f, 0x64, 0x69, 0x73,
+	0x6c, 0x69, 0x6e, 0x6b, 0x74, 0x2f, 0x75, 0x74, 0x69, 0x6c, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x2f, 0x75, 0x73, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -864,7 +991,7 @@ func file_user_userService_proto_rawDescGZIP() []byte {
 	return file_user_userService_proto_rawDescData
 }
 
-var file_user_userService_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_user_userService_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_user_userService_proto_goTypes = []interface{}{
 	(*User)(nil),               // 0: user.User
 	(*UserIdRequest)(nil),      // 1: user.UserIdRequest
@@ -878,35 +1005,40 @@ var file_user_userService_proto_goTypes = []interface{}{
 	(*SearchRequest)(nil),      // 9: user.SearchRequest
 	(*AuthRequest)(nil),        // 10: user.AuthRequest
 	(*AuthResponse)(nil),       // 11: user.AuthResponse
+	(*NewPasswordRequest)(nil), // 12: user.NewPasswordRequest
+	(*NewPassword)(nil),        // 13: user.NewPassword
 }
 var file_user_userService_proto_depIdxs = []int32{
 	0,  // 0: user.GetResponse.user:type_name -> user.User
 	0,  // 1: user.UsersResponse.users:type_name -> user.User
 	0,  // 2: user.UserRequest.user:type_name -> user.User
 	6,  // 3: user.CredentialsRequest.credentials:type_name -> user.Credentials
-	1,  // 4: user.UserService.GetRequest:input_type -> user.UserIdRequest
-	3,  // 5: user.UserService.GetAllRequest:input_type -> user.EmptyRequest
-	5,  // 6: user.UserService.PostRequest:input_type -> user.UserRequest
-	5,  // 7: user.UserService.PostAdminRequest:input_type -> user.UserRequest
-	5,  // 8: user.UserService.UpdateRequest:input_type -> user.UserRequest
-	1,  // 9: user.UserService.DeleteRequest:input_type -> user.UserIdRequest
-	9,  // 10: user.UserService.SearchUsersRequest:input_type -> user.SearchRequest
-	7,  // 11: user.UserService.LoginRequest:input_type -> user.CredentialsRequest
-	10, // 12: user.UserService.IsUserAuthenticated:input_type -> user.AuthRequest
-	2,  // 13: user.UserService.GetRequest:output_type -> user.GetResponse
-	4,  // 14: user.UserService.GetAllRequest:output_type -> user.UsersResponse
-	2,  // 15: user.UserService.PostRequest:output_type -> user.GetResponse
-	2,  // 16: user.UserService.PostAdminRequest:output_type -> user.GetResponse
-	2,  // 17: user.UserService.UpdateRequest:output_type -> user.GetResponse
-	3,  // 18: user.UserService.DeleteRequest:output_type -> user.EmptyRequest
-	4,  // 19: user.UserService.SearchUsersRequest:output_type -> user.UsersResponse
-	8,  // 20: user.UserService.LoginRequest:output_type -> user.LoginResponse
-	11, // 21: user.UserService.IsUserAuthenticated:output_type -> user.AuthResponse
-	13, // [13:22] is the sub-list for method output_type
-	4,  // [4:13] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	13, // 4: user.NewPasswordRequest.newPassword:type_name -> user.NewPassword
+	1,  // 5: user.UserService.GetRequest:input_type -> user.UserIdRequest
+	3,  // 6: user.UserService.GetAllRequest:input_type -> user.EmptyRequest
+	5,  // 7: user.UserService.PostRequest:input_type -> user.UserRequest
+	5,  // 8: user.UserService.PostAdminRequest:input_type -> user.UserRequest
+	5,  // 9: user.UserService.UpdateRequest:input_type -> user.UserRequest
+	1,  // 10: user.UserService.DeleteRequest:input_type -> user.UserIdRequest
+	9,  // 11: user.UserService.SearchUsersRequest:input_type -> user.SearchRequest
+	7,  // 12: user.UserService.LoginRequest:input_type -> user.CredentialsRequest
+	10, // 13: user.UserService.IsUserAuthenticated:input_type -> user.AuthRequest
+	12, // 14: user.UserService.UpdatePasswordRequest:input_type -> user.NewPasswordRequest
+	2,  // 15: user.UserService.GetRequest:output_type -> user.GetResponse
+	4,  // 16: user.UserService.GetAllRequest:output_type -> user.UsersResponse
+	2,  // 17: user.UserService.PostRequest:output_type -> user.GetResponse
+	2,  // 18: user.UserService.PostAdminRequest:output_type -> user.GetResponse
+	2,  // 19: user.UserService.UpdateRequest:output_type -> user.GetResponse
+	3,  // 20: user.UserService.DeleteRequest:output_type -> user.EmptyRequest
+	4,  // 21: user.UserService.SearchUsersRequest:output_type -> user.UsersResponse
+	8,  // 22: user.UserService.LoginRequest:output_type -> user.LoginResponse
+	11, // 23: user.UserService.IsUserAuthenticated:output_type -> user.AuthResponse
+	2,  // 24: user.UserService.UpdatePasswordRequest:output_type -> user.GetResponse
+	15, // [15:25] is the sub-list for method output_type
+	5,  // [5:15] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_user_userService_proto_init() }
@@ -1059,6 +1191,30 @@ func file_user_userService_proto_init() {
 				return nil
 			}
 		}
+		file_user_userService_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*NewPasswordRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_user_userService_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*NewPassword); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1066,7 +1222,7 @@ func file_user_userService_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_user_userService_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -64,6 +64,13 @@ service UserService {
       get: "/auth"
     };
   }
+
+  rpc UpdatePasswordRequest (NewPasswordRequest) returns (GetResponse){
+    option (google.api.http) = {
+      put: "/users"
+      body: "newPassword"
+    };
+  }
 }
 
 
@@ -131,3 +138,15 @@ message AuthRequest{
 message AuthResponse{
   string userRole = 1;
 }
+
+message NewPasswordRequest{
+  NewPassword newPassword = 1;
+}
+
+message NewPassword{
+  string userId = 1;
+  string password = 2;
+  string oldPassword = 3;
+}
+
+
