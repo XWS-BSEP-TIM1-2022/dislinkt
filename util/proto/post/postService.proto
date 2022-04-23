@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/post";
+
+package post;
+
+import "google/api/annotations.proto";
+
+service PostService {
+  rpc GetAllRequest (EmptyRequest) returns (PostsResponse){
+    option(google.api.http) = {
+      get: "/users"
+    };
+  };
+}
+
+message Post {
+  string id = 1;
+}
+
+message EmptyRequest{}
+
+message PostsResponse{
+  repeated Post posts = 1;
+}
