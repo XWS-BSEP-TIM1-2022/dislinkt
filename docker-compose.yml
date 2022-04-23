@@ -48,7 +48,7 @@ services:
           - JAEGER_SAMPLER_TYPE=const
           - JAEGER_SAMPLER_PARAM=1
           - USER_SERVICE_PORT=8000
-          - USER_DB_HOST=userMicroservice:nuEIm8GkSZbm3MKd@xws.cjx50.mongodb.net/usersDB
+          - USER_DB_HOST=dislinkt:WiYf6BvFmSpJS2Ob@xws.cjx50.mongodb.net/usersDB
           - USER_SERVICE_NAME=user_service
     
     # dislinkt-frontend:
