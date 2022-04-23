@@ -30,6 +30,8 @@ services:
           - GATEWAY_HTTP_PORT=8090
           - USER_SERVICE_HOST=user_service
           - USER_SERVICE_PORT=8000
+          - CERTIFICATE_PATH=./certificates/dislinkt.cer
+          - CERTIFICATE_KEY_PATH=./certificates/dislinkt_private_key.key
     
     user_service:
         image: user_service
