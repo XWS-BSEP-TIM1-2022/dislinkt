@@ -48,7 +48,7 @@ service UserService {
 
   rpc SearchUsersRequest (SearchRequest) returns (UsersResponse){
     option(google.api.http) = {
-      get: "/users/search?searchParam={searchParam}"
+      get: "/users/search"
     };
   };
 
@@ -56,6 +56,12 @@ service UserService {
     option (google.api.http) = {
       post: "/auth/login"
       body: "credentials"
+    };
+  }
+
+  rpc IsUserAuthenticated (AuthRequest) returns (AuthResponse){
+    option (google.api.http) = {
+      get: "/auth"
     };
   }
 }
@@ -116,4 +122,12 @@ message LoginResponse{
 
 message SearchRequest{
   string searchParam = 1;
+}
+
+message AuthRequest{
+  string jwtToken = 1;
+}
+
+message AuthResponse{
+  string userRole = 1;
 }

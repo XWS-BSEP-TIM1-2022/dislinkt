@@ -30,6 +30,7 @@ type UserServiceClient interface {
 	DeleteRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	SearchUsersRequest(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*UsersResponse, error)
 	LoginRequest(ctx context.Context, in *CredentialsRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	IsUserAuthenticated(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error)
 }
 
 type userServiceClient struct {
@@ -112,6 +113,15 @@ func (c *userServiceClient) LoginRequest(ctx context.Context, in *CredentialsReq
 	return out, nil
 }
 
+func (c *userServiceClient) IsUserAuthenticated(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error) {
+	out := new(AuthResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/IsUserAuthenticated", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -124,6 +134,7 @@ type UserServiceServer interface {
 	DeleteRequest(context.Context, *UserIdRequest) (*EmptyRequest, error)
 	SearchUsersRequest(context.Context, *SearchRequest) (*UsersResponse, error)
 	LoginRequest(context.Context, *CredentialsRequest) (*LoginResponse, error)
+	IsUserAuthenticated(context.Context, *AuthRequest) (*AuthResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -154,6 +165,9 @@ func (UnimplementedUserServiceServer) SearchUsersRequest(context.Context, *Searc
 }
 func (UnimplementedUserServiceServer) LoginRequest(context.Context, *CredentialsRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginRequest not implemented")
+}
+func (UnimplementedUserServiceServer) IsUserAuthenticated(context.Context, *AuthRequest) (*AuthResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsUserAuthenticated not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -312,6 +326,24 @@ func _UserService_LoginRequest_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_IsUserAuthenticated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).IsUserAuthenticated(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/IsUserAuthenticated",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).IsUserAuthenticated(ctx, req.(*AuthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -350,6 +382,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginRequest",
 			Handler:    _UserService_LoginRequest_Handler,
+		},
+		{
+			MethodName: "IsUserAuthenticated",
+			Handler:    _UserService_IsUserAuthenticated_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
