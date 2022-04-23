@@ -30,6 +30,8 @@ services:
           - GATEWAY_HTTP_PORT=8090
           - USER_SERVICE_HOST=user_service
           - USER_SERVICE_PORT=8000
+          - POST_SERVICE_HOST=post_service
+          - POST_SERVICE_PORT=8001
           - CERTIFICATE_PATH=./certificates/dislinkt.cer
           - CERTIFICATE_KEY_PATH=./certificates/dislinkt_private_key.key
     
@@ -51,6 +53,24 @@ services:
           - USER_DB_HOST=dislinkt:WiYf6BvFmSpJS2Ob@xws.cjx50.mongodb.net/usersDB
           - USER_SERVICE_NAME=user_service
     
+    post_service:
+        image: post_service
+        container_name: post_service
+        build:
+          context: .
+          dockerfile: ./post-microservice/Dockerfile
+        restart: always
+        environment:
+          - JAEGER_SERVICE_NAME=post_service
+          - JAEGER_AGENT_HOST=tracing
+          - JAEGER_AGENT_PORT=6831
+          - JAEGER_SAMPLER_MANAGER_HOST_PORT=jaeger:5778
+          - JAEGER_SAMPLER_TYPE=const
+          - JAEGER_SAMPLER_PARAM=1
+          - POST_SERVICE_PORT=8001
+          - POST_DB_HOST=dislinkt:WiYf6BvFmSpJS2Ob@xws.cjx50.mongodb.net/postsDB
+          - POST_SERVICE_NAME=post_service
+        
     # dislinkt-frontend:
         # image: dislinkt-frontend
         # container_name: dislinkt-frontend
