@@ -32,6 +32,8 @@ type UserServiceClient interface {
 	LoginRequest(ctx context.Context, in *CredentialsRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	IsUserAuthenticated(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error)
 	UpdatePasswordRequest(ctx context.Context, in *NewPasswordRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	GetAllUsersExperienceRequest(ctx context.Context, in *ExperienceRequest, opts ...grpc.CallOption) (*ExperienceResponse, error)
+	PostExperienceRequest(ctx context.Context, in *NewExperienceRequest, opts ...grpc.CallOption) (*NewExperienceResponse, error)
 }
 
 type userServiceClient struct {
@@ -132,6 +134,24 @@ func (c *userServiceClient) UpdatePasswordRequest(ctx context.Context, in *NewPa
 	return out, nil
 }
 
+func (c *userServiceClient) GetAllUsersExperienceRequest(ctx context.Context, in *ExperienceRequest, opts ...grpc.CallOption) (*ExperienceResponse, error) {
+	out := new(ExperienceResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetAllUsersExperienceRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) PostExperienceRequest(ctx context.Context, in *NewExperienceRequest, opts ...grpc.CallOption) (*NewExperienceResponse, error) {
+	out := new(NewExperienceResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/PostExperienceRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -146,6 +166,8 @@ type UserServiceServer interface {
 	LoginRequest(context.Context, *CredentialsRequest) (*LoginResponse, error)
 	IsUserAuthenticated(context.Context, *AuthRequest) (*AuthResponse, error)
 	UpdatePasswordRequest(context.Context, *NewPasswordRequest) (*GetResponse, error)
+	GetAllUsersExperienceRequest(context.Context, *ExperienceRequest) (*ExperienceResponse, error)
+	PostExperienceRequest(context.Context, *NewExperienceRequest) (*NewExperienceResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -182,6 +204,12 @@ func (UnimplementedUserServiceServer) IsUserAuthenticated(context.Context, *Auth
 }
 func (UnimplementedUserServiceServer) UpdatePasswordRequest(context.Context, *NewPasswordRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePasswordRequest not implemented")
+}
+func (UnimplementedUserServiceServer) GetAllUsersExperienceRequest(context.Context, *ExperienceRequest) (*ExperienceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsersExperienceRequest not implemented")
+}
+func (UnimplementedUserServiceServer) PostExperienceRequest(context.Context, *NewExperienceRequest) (*NewExperienceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostExperienceRequest not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -376,6 +404,42 @@ func _UserService_UpdatePasswordRequest_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_GetAllUsersExperienceRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExperienceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetAllUsersExperienceRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetAllUsersExperienceRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetAllUsersExperienceRequest(ctx, req.(*ExperienceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_PostExperienceRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NewExperienceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).PostExperienceRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/PostExperienceRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).PostExperienceRequest(ctx, req.(*NewExperienceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -422,6 +486,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdatePasswordRequest",
 			Handler:    _UserService_UpdatePasswordRequest_Handler,
+		},
+		{
+			MethodName: "GetAllUsersExperienceRequest",
+			Handler:    _UserService_GetAllUsersExperienceRequest_Handler,
+		},
+		{
+			MethodName: "PostExperienceRequest",
+			Handler:    _UserService_PostExperienceRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

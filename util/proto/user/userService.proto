@@ -71,6 +71,19 @@ service UserService {
       body: "newPassword"
     };
   }
+
+  rpc GetAllUsersExperienceRequest (ExperienceRequest) returns (ExperienceResponse){
+    option(google.api.http) = {
+      get: "/users/experience/{userId}"
+    };
+  }
+
+  rpc PostExperienceRequest (NewExperienceRequest) returns (NewExperienceResponse){
+    option (google.api.http) = {
+      post: "/users/experience"
+      body: "experience"
+    };
+  }
 }
 
 
@@ -90,6 +103,16 @@ message User {
   repeated string interests = 13;
   bool private = 14;
   string role = 15;
+}
+
+message Experience{
+  string id = 1;
+  string userId = 2;
+  string name = 3;
+  string title = 4;
+  string startDate = 5;
+  string endDate = 6;
+  bool experienceType = 7;
 }
 
 message UserIdRequest{
@@ -147,6 +170,22 @@ message NewPassword{
   string userId = 1;
   string password = 2;
   string oldPassword = 3;
+}
+
+message ExperienceRequest{
+  string userId = 1;
+}
+
+message ExperienceResponse{
+  repeated Experience experiences = 1;
+}
+
+message NewExperienceRequest{
+  Experience experience = 1;
+}
+
+message NewExperienceResponse{
+  Experience experience = 1;
 }
 
 
