@@ -34,6 +34,7 @@ type UserServiceClient interface {
 	UpdatePasswordRequest(ctx context.Context, in *NewPasswordRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	GetAllUsersExperienceRequest(ctx context.Context, in *ExperienceRequest, opts ...grpc.CallOption) (*ExperienceResponse, error)
 	PostExperienceRequest(ctx context.Context, in *NewExperienceRequest, opts ...grpc.CallOption) (*NewExperienceResponse, error)
+	DeleteExperienceRequest(ctx context.Context, in *DeleteUsersExperienceRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 }
 
 type userServiceClient struct {
@@ -152,6 +153,15 @@ func (c *userServiceClient) PostExperienceRequest(ctx context.Context, in *NewEx
 	return out, nil
 }
 
+func (c *userServiceClient) DeleteExperienceRequest(ctx context.Context, in *DeleteUsersExperienceRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/user.UserService/DeleteExperienceRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -168,6 +178,7 @@ type UserServiceServer interface {
 	UpdatePasswordRequest(context.Context, *NewPasswordRequest) (*GetResponse, error)
 	GetAllUsersExperienceRequest(context.Context, *ExperienceRequest) (*ExperienceResponse, error)
 	PostExperienceRequest(context.Context, *NewExperienceRequest) (*NewExperienceResponse, error)
+	DeleteExperienceRequest(context.Context, *DeleteUsersExperienceRequest) (*EmptyRequest, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -210,6 +221,9 @@ func (UnimplementedUserServiceServer) GetAllUsersExperienceRequest(context.Conte
 }
 func (UnimplementedUserServiceServer) PostExperienceRequest(context.Context, *NewExperienceRequest) (*NewExperienceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PostExperienceRequest not implemented")
+}
+func (UnimplementedUserServiceServer) DeleteExperienceRequest(context.Context, *DeleteUsersExperienceRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteExperienceRequest not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -440,6 +454,24 @@ func _UserService_PostExperienceRequest_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_DeleteExperienceRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteUsersExperienceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).DeleteExperienceRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/DeleteExperienceRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).DeleteExperienceRequest(ctx, req.(*DeleteUsersExperienceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -494,6 +526,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PostExperienceRequest",
 			Handler:    _UserService_PostExperienceRequest_Handler,
+		},
+		{
+			MethodName: "DeleteExperienceRequest",
+			Handler:    _UserService_DeleteExperienceRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

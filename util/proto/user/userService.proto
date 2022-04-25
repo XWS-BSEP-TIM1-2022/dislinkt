@@ -84,6 +84,12 @@ service UserService {
       body: "experience"
     };
   }
+
+  rpc DeleteExperienceRequest (DeleteUsersExperienceRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      delete: "/users/experience/{experienceId}"
+    };
+  };
 }
 
 
@@ -186,6 +192,10 @@ message NewExperienceRequest{
 
 message NewExperienceResponse{
   Experience experience = 1;
+}
+
+message DeleteUsersExperienceRequest{
+  string experienceId = 1;
 }
 
 
