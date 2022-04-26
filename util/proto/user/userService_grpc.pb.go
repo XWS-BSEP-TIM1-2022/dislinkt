@@ -35,6 +35,7 @@ type UserServiceClient interface {
 	GetAllUsersExperienceRequest(ctx context.Context, in *ExperienceRequest, opts ...grpc.CallOption) (*ExperienceResponse, error)
 	PostExperienceRequest(ctx context.Context, in *NewExperienceRequest, opts ...grpc.CallOption) (*NewExperienceResponse, error)
 	DeleteExperienceRequest(ctx context.Context, in *DeleteUsersExperienceRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	IsUserPrivateRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*PrivateResponse, error)
 }
 
 type userServiceClient struct {
@@ -162,6 +163,15 @@ func (c *userServiceClient) DeleteExperienceRequest(ctx context.Context, in *Del
 	return out, nil
 }
 
+func (c *userServiceClient) IsUserPrivateRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*PrivateResponse, error) {
+	out := new(PrivateResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/IsUserPrivateRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -179,6 +189,7 @@ type UserServiceServer interface {
 	GetAllUsersExperienceRequest(context.Context, *ExperienceRequest) (*ExperienceResponse, error)
 	PostExperienceRequest(context.Context, *NewExperienceRequest) (*NewExperienceResponse, error)
 	DeleteExperienceRequest(context.Context, *DeleteUsersExperienceRequest) (*EmptyRequest, error)
+	IsUserPrivateRequest(context.Context, *UserIdRequest) (*PrivateResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -224,6 +235,9 @@ func (UnimplementedUserServiceServer) PostExperienceRequest(context.Context, *Ne
 }
 func (UnimplementedUserServiceServer) DeleteExperienceRequest(context.Context, *DeleteUsersExperienceRequest) (*EmptyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteExperienceRequest not implemented")
+}
+func (UnimplementedUserServiceServer) IsUserPrivateRequest(context.Context, *UserIdRequest) (*PrivateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsUserPrivateRequest not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -472,6 +486,24 @@ func _UserService_DeleteExperienceRequest_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_IsUserPrivateRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).IsUserPrivateRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/IsUserPrivateRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).IsUserPrivateRequest(ctx, req.(*UserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -530,6 +562,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteExperienceRequest",
 			Handler:    _UserService_DeleteExperienceRequest_Handler,
+		},
+		{
+			MethodName: "IsUserPrivateRequest",
+			Handler:    _UserService_IsUserPrivateRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

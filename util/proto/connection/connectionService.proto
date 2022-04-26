@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option go_package = "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/connection";
+
+package connection;
+
+import "google/api/annotations.proto";
+
+service ConnectionService {
+  rpc NewUserConnection(UserConnectionRequest) returns (UserConnectionResponse){
+    option(google.api.http) = {
+      post: "/connections",
+      body: "connection"
+    };
+  }
+  rpc ApproveConnection(UserConnectionRequest) returns (UserConnectionResponse){
+    option(google.api.http) = {
+      post: "/connections/approve",
+      body: "connection"
+    };
+  }
+}
+
+message Connection{
+  string userId = 1;
+  string connectedUserId = 2;
+}
+
+message UserConnectionRequest{
+  Connection connection = 1;
+}
+
+message UserConnectionResponse{
+  bool ok = 1;
+}

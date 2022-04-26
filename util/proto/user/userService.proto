@@ -90,6 +90,12 @@ service UserService {
       delete: "/users/experience/{experienceId}"
     };
   };
+
+  rpc IsUserPrivateRequest (UserIdRequest) returns (PrivateResponse){
+    option(google.api.http) = {
+      get: "/users/is-private/{userId}"
+    };
+  };
 }
 
 
@@ -198,4 +204,7 @@ message DeleteUsersExperienceRequest{
   string experienceId = 1;
 }
 
+message PrivateResponse{
+  bool isPrivate = 1;
+}
 
