@@ -37,7 +37,42 @@ service PostService {
       delete: "/posts/{id}"
     };
   };
+
+  rpc GetCommentRequest (CommentIdRequest) returns (CommentResponse) {
+    option(google.api.http) = {
+      get: "/comments/{id}"
+    };
+  };
+
+  rpc GetAllCommentsRequest (EmptyRequest) returns (CommentsResponse) {
+    option(google.api.http) = {
+      get: "/comments"
+    };
+  };
+
+  rpc GetAllCommentsFromPostRequest (PostCommentsRequest) returns (CommentsResponse) {
+    option(google.api.http) = {
+      get: "/posts/{postId}/comments"
+    };
+  };
+
+  rpc CreateCommentRequest (CommentRequest) returns (CommentResponse) {
+    option(google.api.http) = {
+      post: "/posts/{postId}/comments"
+      body: "comment"
+    };
+  };
+
+  rpc DeleteCommentRequest (CommentIdRequest) returns (EmptyRequest) {
+    option (google.api.http) = {
+      delete: "/comments/{id}"
+    };
+  };
 }
+
+message EmptyRequest {}
+
+// POST
 
 message Post {
   string id = 1;
@@ -59,8 +94,6 @@ message PostResponse {
   Post post = 1;
 }
 
-message EmptyRequest {}
-
 message PostsResponse {
   repeated Post posts = 1;
 }
@@ -68,4 +101,36 @@ message PostsResponse {
 message PostRequest {
   string id = 1;
   Post post = 2;
+}
+
+// COMMENT
+
+message Comment {
+  string id = 1;
+  string userId = 2;
+  string postId = 3;
+  string text = 4;
+  string creationDate = 5;
+}
+
+message CommentIdRequest {
+  string id = 1;
+}
+
+message PostCommentsRequest {
+  string postId = 1;
+}
+
+message CommentResponse {
+  Comment comment = 1;
+}
+
+message CommentsResponse {
+  repeated Comment comments = 1;
+}
+
+message CommentRequest {
+  string id = 1;
+  string postId = 2;
+  Comment comment = 3;
 }

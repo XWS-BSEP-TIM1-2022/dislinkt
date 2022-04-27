@@ -27,6 +27,11 @@ type PostServiceClient interface {
 	GetAllFromUserRequest(ctx context.Context, in *UserPostsRequest, opts ...grpc.CallOption) (*PostsResponse, error)
 	CreateRequest(ctx context.Context, in *PostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	DeleteRequest(ctx context.Context, in *PostIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	GetCommentRequest(ctx context.Context, in *CommentIdRequest, opts ...grpc.CallOption) (*CommentResponse, error)
+	GetAllCommentsRequest(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*CommentsResponse, error)
+	GetAllCommentsFromPostRequest(ctx context.Context, in *PostCommentsRequest, opts ...grpc.CallOption) (*CommentsResponse, error)
+	CreateCommentRequest(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*CommentResponse, error)
+	DeleteCommentRequest(ctx context.Context, in *CommentIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 }
 
 type postServiceClient struct {
@@ -82,6 +87,51 @@ func (c *postServiceClient) DeleteRequest(ctx context.Context, in *PostIdRequest
 	return out, nil
 }
 
+func (c *postServiceClient) GetCommentRequest(ctx context.Context, in *CommentIdRequest, opts ...grpc.CallOption) (*CommentResponse, error) {
+	out := new(CommentResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetCommentRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) GetAllCommentsRequest(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*CommentsResponse, error) {
+	out := new(CommentsResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetAllCommentsRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) GetAllCommentsFromPostRequest(ctx context.Context, in *PostCommentsRequest, opts ...grpc.CallOption) (*CommentsResponse, error) {
+	out := new(CommentsResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetAllCommentsFromPostRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) CreateCommentRequest(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*CommentResponse, error) {
+	out := new(CommentResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/CreateCommentRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) DeleteCommentRequest(ctx context.Context, in *CommentIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/post.PostService/DeleteCommentRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PostServiceServer is the server API for PostService service.
 // All implementations must embed UnimplementedPostServiceServer
 // for forward compatibility
@@ -91,6 +141,11 @@ type PostServiceServer interface {
 	GetAllFromUserRequest(context.Context, *UserPostsRequest) (*PostsResponse, error)
 	CreateRequest(context.Context, *PostRequest) (*PostResponse, error)
 	DeleteRequest(context.Context, *PostIdRequest) (*EmptyRequest, error)
+	GetCommentRequest(context.Context, *CommentIdRequest) (*CommentResponse, error)
+	GetAllCommentsRequest(context.Context, *EmptyRequest) (*CommentsResponse, error)
+	GetAllCommentsFromPostRequest(context.Context, *PostCommentsRequest) (*CommentsResponse, error)
+	CreateCommentRequest(context.Context, *CommentRequest) (*CommentResponse, error)
+	DeleteCommentRequest(context.Context, *CommentIdRequest) (*EmptyRequest, error)
 	mustEmbedUnimplementedPostServiceServer()
 }
 
@@ -112,6 +167,21 @@ func (UnimplementedPostServiceServer) CreateRequest(context.Context, *PostReques
 }
 func (UnimplementedPostServiceServer) DeleteRequest(context.Context, *PostIdRequest) (*EmptyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRequest not implemented")
+}
+func (UnimplementedPostServiceServer) GetCommentRequest(context.Context, *CommentIdRequest) (*CommentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCommentRequest not implemented")
+}
+func (UnimplementedPostServiceServer) GetAllCommentsRequest(context.Context, *EmptyRequest) (*CommentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllCommentsRequest not implemented")
+}
+func (UnimplementedPostServiceServer) GetAllCommentsFromPostRequest(context.Context, *PostCommentsRequest) (*CommentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllCommentsFromPostRequest not implemented")
+}
+func (UnimplementedPostServiceServer) CreateCommentRequest(context.Context, *CommentRequest) (*CommentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCommentRequest not implemented")
+}
+func (UnimplementedPostServiceServer) DeleteCommentRequest(context.Context, *CommentIdRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCommentRequest not implemented")
 }
 func (UnimplementedPostServiceServer) mustEmbedUnimplementedPostServiceServer() {}
 
@@ -216,6 +286,96 @@ func _PostService_DeleteRequest_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostService_GetCommentRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).GetCommentRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/GetCommentRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).GetCommentRequest(ctx, req.(*CommentIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_GetAllCommentsRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).GetAllCommentsRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/GetAllCommentsRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).GetAllCommentsRequest(ctx, req.(*EmptyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_GetAllCommentsFromPostRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostCommentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).GetAllCommentsFromPostRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/GetAllCommentsFromPostRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).GetAllCommentsFromPostRequest(ctx, req.(*PostCommentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_CreateCommentRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).CreateCommentRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/CreateCommentRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).CreateCommentRequest(ctx, req.(*CommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_DeleteCommentRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).DeleteCommentRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/DeleteCommentRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).DeleteCommentRequest(ctx, req.(*CommentIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PostService_ServiceDesc is the grpc.ServiceDesc for PostService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -242,6 +402,26 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteRequest",
 			Handler:    _PostService_DeleteRequest_Handler,
+		},
+		{
+			MethodName: "GetCommentRequest",
+			Handler:    _PostService_GetCommentRequest_Handler,
+		},
+		{
+			MethodName: "GetAllCommentsRequest",
+			Handler:    _PostService_GetAllCommentsRequest_Handler,
+		},
+		{
+			MethodName: "GetAllCommentsFromPostRequest",
+			Handler:    _PostService_GetAllCommentsFromPostRequest_Handler,
+		},
+		{
+			MethodName: "CreateCommentRequest",
+			Handler:    _PostService_CreateCommentRequest_Handler,
+		},
+		{
+			MethodName: "DeleteCommentRequest",
+			Handler:    _PostService_DeleteCommentRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
