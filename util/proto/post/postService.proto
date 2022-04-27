@@ -80,6 +80,7 @@ message Post {
   string text = 3;
   repeated string links = 4;
   string creationDate = 5;
+  string image = 6;
 }
 
 message PostIdRequest {
