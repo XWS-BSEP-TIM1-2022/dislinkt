@@ -13,17 +13,64 @@ service ConnectionService {
       body: "connection"
     };
   }
+
   rpc ApproveConnection(UserConnectionRequest) returns (UserConnectionResponse){
     option(google.api.http) = {
-      post: "/connections/approve",
+      put: "/connections/approve",
       body: "connection"
     };
   }
+
+  rpc RejectConnection(UserConnectionRequest) returns (UserConnectionResponse){
+    option(google.api.http) = {
+      put: "/connections/reject",
+      body: "connection"
+    };
+  }
+
+  rpc DeleteConnection(Connection) returns (UserConnectionResponse){
+    option(google.api.http) = {
+      delete: "/connections",
+    };
+  }
+
+  rpc GetAllConnections(UserIdRequest) returns (AllConnectionResponse){
+    option(google.api.http) = {
+      get: "/connections/all/{userId}"
+    };
+  }
+
+  rpc GetFollowings(UserIdRequest) returns (AllConnectionResponse){
+    option(google.api.http) = {
+      get: "/connections/followings/{userId}"
+    };
+  }
+
+  rpc GetFollowers(UserIdRequest) returns (AllConnectionResponse){
+    option(google.api.http) = {
+      get: "/connections/followers/{userId}"
+    };
+  }
+
+  rpc GetAllRequestConnectionsByUserId(UserIdRequest) returns (AllConnectionResponse){
+    option(google.api.http) = {
+      get: "/connections/requests/{userId}"
+    };
+  }
+
+  rpc GetAllPendingConnectionsByUserId(UserIdRequest) returns (AllConnectionResponse){
+    option(google.api.http) = {
+      get: "/connections/pending/{userId}"
+    };
+  }
+
 }
 
 message Connection{
   string userId = 1;
   string connectedUserId = 2;
+  bool isConnected = 3;
+  bool pendingConnection = 4;
 }
 
 message UserConnectionRequest{
@@ -32,4 +79,12 @@ message UserConnectionRequest{
 
 message UserConnectionResponse{
   bool ok = 1;
+}
+
+message UserIdRequest{
+  string userId = 1;
+}
+
+message AllConnectionResponse{
+  repeated Connection connections = 1;
 }
