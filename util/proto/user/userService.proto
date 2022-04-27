@@ -96,6 +96,20 @@ service UserService {
       get: "/users/is-private/{userId}"
     };
   };
+
+  rpc AddUserSkill (NewSkillRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      put: "/users/newSkill"
+      body: "newSkill"
+    };
+  };
+
+  rpc AddUserInterest (NewInterestRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      put: "/users/newInterest"
+      body: "newInterest"
+    };
+  }
 }
 
 
@@ -206,5 +220,23 @@ message DeleteUsersExperienceRequest{
 
 message PrivateResponse{
   bool isPrivate = 1;
+}
+
+message NewSkillRequest{
+  NewSkill newSkill = 1;
+}
+
+message NewSkill{
+  string userId = 1;
+  string skill = 2;
+}
+
+message NewInterestRequest{
+  NewInterest newInterest = 1;
+}
+
+message NewInterest{
+  string userId = 1;
+  string interest = 2;
 }
 
