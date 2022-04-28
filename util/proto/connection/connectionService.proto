@@ -78,7 +78,7 @@ message UserConnectionRequest{
 }
 
 message UserConnectionResponse{
-  bool ok = 1;
+  Connection connection = 1;
 }
 
 message UserIdRequest{
