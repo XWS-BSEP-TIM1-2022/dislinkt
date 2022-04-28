@@ -178,6 +178,7 @@ message LoginResponse{
 
 message SearchRequest{
   string searchParam = 1;
+  string userId = 2;
 }
 
 message AuthRequest{
