@@ -31,7 +31,9 @@ services:
           - USER_SERVICE_HOST=user_service
           - USER_SERVICE_PORT=8000
           - POST_SERVICE_HOST=post_service
-          - POST_SERVICE_PORT=8001
+          - POST_SERVICE_PORT=8000
+          - CONNECTION_SERVICE_HOST=connection_service
+          - CONNECTION_SERVICE_PORT=8000
           - CERTIFICATE_PATH=./certificates/dislinkt.cer
           - CERTIFICATE_KEY_PATH=./certificates/dislinkt_private_key.key
     
@@ -67,9 +69,31 @@ services:
           - JAEGER_SAMPLER_MANAGER_HOST_PORT=jaeger:5778
           - JAEGER_SAMPLER_TYPE=const
           - JAEGER_SAMPLER_PARAM=1
-          - POST_SERVICE_PORT=8001
+          - POST_SERVICE_PORT=8000
           - POST_DB_HOST=dislinkt:WiYf6BvFmSpJS2Ob@xws.cjx50.mongodb.net/postsDB
           - POST_SERVICE_NAME=post_service
+          
+    connection_service:
+        image: connection_service
+        container_name: connection_service
+        build:
+          context: .
+          dockerfile: ./connection-microservice/Dockerfile
+        restart: always
+        environment:
+          - JAEGER_SERVICE_NAME=connection_service
+          - JAEGER_AGENT_HOST=tracing
+          - JAEGER_AGENT_PORT=6831
+          - JAEGER_SAMPLER_MANAGER_HOST_PORT=jaeger:5778
+          - JAEGER_SAMPLER_TYPE=const
+          - JAEGER_SAMPLER_PARAM=1
+          - CONNECTION_SERVICE_PORT=8000
+          - CONNECTION_DB_URI=neo4j+s://ac87e36d.databases.neo4j.io
+          - CONNECTION_DB_USERNAME=neo4j
+          - CONNECTION_DB_PASSWORD=I7InmmqDyQoT4BhAF5iXOCDB-EQ3wh-hcJn2-8QSobY
+          - CONNECTION_SERVICE_NAME=connection_service
+          - USER_SERVICE_HOST=user_service
+          - USER_SERVICE_PORT=8000
         
     # dislinkt-frontend:
         # image: dislinkt-frontend
