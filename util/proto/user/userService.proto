@@ -110,6 +110,18 @@ service UserService {
       body: "newInterest"
     };
   }
+
+  rpc RemoveSkill (RemoveSkillRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      delete: "/users/removeSkill/{userId}/{skill}"
+    };
+  }
+
+  rpc RemoveInterest (RemoveInterestRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      delete: "/users/removeInterest/{userId}/{interest}"
+    };
+  }
 }
 
 
@@ -238,6 +250,16 @@ message NewInterestRequest{
 }
 
 message NewInterest{
+  string userId = 1;
+  string interest = 2;
+}
+
+message RemoveSkillRequest{
+  string userId = 1;
+  string skill = 2;
+}
+
+message RemoveInterestRequest{
   string userId = 1;
   string interest = 2;
 }

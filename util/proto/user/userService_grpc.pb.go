@@ -38,6 +38,8 @@ type UserServiceClient interface {
 	IsUserPrivateRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*PrivateResponse, error)
 	AddUserSkill(ctx context.Context, in *NewSkillRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	AddUserInterest(ctx context.Context, in *NewInterestRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	RemoveSkill(ctx context.Context, in *RemoveSkillRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	RemoveInterest(ctx context.Context, in *RemoveInterestRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 }
 
 type userServiceClient struct {
@@ -192,6 +194,24 @@ func (c *userServiceClient) AddUserInterest(ctx context.Context, in *NewInterest
 	return out, nil
 }
 
+func (c *userServiceClient) RemoveSkill(ctx context.Context, in *RemoveSkillRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/user.UserService/RemoveSkill", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) RemoveInterest(ctx context.Context, in *RemoveInterestRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/user.UserService/RemoveInterest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -212,6 +232,8 @@ type UserServiceServer interface {
 	IsUserPrivateRequest(context.Context, *UserIdRequest) (*PrivateResponse, error)
 	AddUserSkill(context.Context, *NewSkillRequest) (*EmptyRequest, error)
 	AddUserInterest(context.Context, *NewInterestRequest) (*EmptyRequest, error)
+	RemoveSkill(context.Context, *RemoveSkillRequest) (*EmptyRequest, error)
+	RemoveInterest(context.Context, *RemoveInterestRequest) (*EmptyRequest, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -266,6 +288,12 @@ func (UnimplementedUserServiceServer) AddUserSkill(context.Context, *NewSkillReq
 }
 func (UnimplementedUserServiceServer) AddUserInterest(context.Context, *NewInterestRequest) (*EmptyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddUserInterest not implemented")
+}
+func (UnimplementedUserServiceServer) RemoveSkill(context.Context, *RemoveSkillRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveSkill not implemented")
+}
+func (UnimplementedUserServiceServer) RemoveInterest(context.Context, *RemoveInterestRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveInterest not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -568,6 +596,42 @@ func _UserService_AddUserInterest_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_RemoveSkill_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveSkillRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).RemoveSkill(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/RemoveSkill",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).RemoveSkill(ctx, req.(*RemoveSkillRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_RemoveInterest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveInterestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).RemoveInterest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/RemoveInterest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).RemoveInterest(ctx, req.(*RemoveInterestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -638,6 +702,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddUserInterest",
 			Handler:    _UserService_AddUserInterest_Handler,
+		},
+		{
+			MethodName: "RemoveSkill",
+			Handler:    _UserService_RemoveSkill_Handler,
+		},
+		{
+			MethodName: "RemoveInterest",
+			Handler:    _UserService_RemoveInterest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
