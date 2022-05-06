@@ -31,6 +31,10 @@ type UserServiceClient interface {
 	SearchUsersRequest(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*UsersResponse, error)
 	LoginRequest(ctx context.Context, in *CredentialsRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	IsUserAuthenticated(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error)
+	GetQR2FA(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*TFAResponse, error)
+	Enable2FA(ctx context.Context, in *TFARequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	Verify2FA(ctx context.Context, in *TFARequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	Disable2FA(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	UpdatePasswordRequest(ctx context.Context, in *NewPasswordRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	GetAllUsersExperienceRequest(ctx context.Context, in *ExperienceRequest, opts ...grpc.CallOption) (*ExperienceResponse, error)
 	PostExperienceRequest(ctx context.Context, in *NewExperienceRequest, opts ...grpc.CallOption) (*NewExperienceResponse, error)
@@ -131,6 +135,42 @@ func (c *userServiceClient) IsUserAuthenticated(ctx context.Context, in *AuthReq
 	return out, nil
 }
 
+func (c *userServiceClient) GetQR2FA(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*TFAResponse, error) {
+	out := new(TFAResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetQR2FA", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) Enable2FA(ctx context.Context, in *TFARequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/user.UserService/Enable2FA", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) Verify2FA(ctx context.Context, in *TFARequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/Verify2FA", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) Disable2FA(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/user.UserService/Disable2FA", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userServiceClient) UpdatePasswordRequest(ctx context.Context, in *NewPasswordRequest, opts ...grpc.CallOption) (*GetResponse, error) {
 	out := new(GetResponse)
 	err := c.cc.Invoke(ctx, "/user.UserService/UpdatePasswordRequest", in, out, opts...)
@@ -225,6 +265,10 @@ type UserServiceServer interface {
 	SearchUsersRequest(context.Context, *SearchRequest) (*UsersResponse, error)
 	LoginRequest(context.Context, *CredentialsRequest) (*LoginResponse, error)
 	IsUserAuthenticated(context.Context, *AuthRequest) (*AuthResponse, error)
+	GetQR2FA(context.Context, *UserIdRequest) (*TFAResponse, error)
+	Enable2FA(context.Context, *TFARequest) (*EmptyRequest, error)
+	Verify2FA(context.Context, *TFARequest) (*LoginResponse, error)
+	Disable2FA(context.Context, *UserIdRequest) (*EmptyRequest, error)
 	UpdatePasswordRequest(context.Context, *NewPasswordRequest) (*GetResponse, error)
 	GetAllUsersExperienceRequest(context.Context, *ExperienceRequest) (*ExperienceResponse, error)
 	PostExperienceRequest(context.Context, *NewExperienceRequest) (*NewExperienceResponse, error)
@@ -267,6 +311,18 @@ func (UnimplementedUserServiceServer) LoginRequest(context.Context, *Credentials
 }
 func (UnimplementedUserServiceServer) IsUserAuthenticated(context.Context, *AuthRequest) (*AuthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsUserAuthenticated not implemented")
+}
+func (UnimplementedUserServiceServer) GetQR2FA(context.Context, *UserIdRequest) (*TFAResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetQR2FA not implemented")
+}
+func (UnimplementedUserServiceServer) Enable2FA(context.Context, *TFARequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Enable2FA not implemented")
+}
+func (UnimplementedUserServiceServer) Verify2FA(context.Context, *TFARequest) (*LoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Verify2FA not implemented")
+}
+func (UnimplementedUserServiceServer) Disable2FA(context.Context, *UserIdRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Disable2FA not implemented")
 }
 func (UnimplementedUserServiceServer) UpdatePasswordRequest(context.Context, *NewPasswordRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePasswordRequest not implemented")
@@ -466,6 +522,78 @@ func _UserService_IsUserAuthenticated_Handler(srv interface{}, ctx context.Conte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).IsUserAuthenticated(ctx, req.(*AuthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetQR2FA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetQR2FA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetQR2FA",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetQR2FA(ctx, req.(*UserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_Enable2FA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TFARequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).Enable2FA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/Enable2FA",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).Enable2FA(ctx, req.(*TFARequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_Verify2FA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TFARequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).Verify2FA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/Verify2FA",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).Verify2FA(ctx, req.(*TFARequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_Disable2FA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).Disable2FA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/Disable2FA",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).Disable2FA(ctx, req.(*UserIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -674,6 +802,22 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "IsUserAuthenticated",
 			Handler:    _UserService_IsUserAuthenticated_Handler,
+		},
+		{
+			MethodName: "GetQR2FA",
+			Handler:    _UserService_GetQR2FA_Handler,
+		},
+		{
+			MethodName: "Enable2FA",
+			Handler:    _UserService_Enable2FA_Handler,
+		},
+		{
+			MethodName: "Verify2FA",
+			Handler:    _UserService_Verify2FA_Handler,
+		},
+		{
+			MethodName: "Disable2FA",
+			Handler:    _UserService_Disable2FA_Handler,
 		},
 		{
 			MethodName: "UpdatePasswordRequest",

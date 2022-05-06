@@ -65,6 +65,32 @@ service UserService {
     };
   }
 
+  rpc GetQR2FA (UserIdRequest) returns (TFAResponse){
+    option (google.api.http) = {
+      put: "/auth/getQR2fa/{userId}"
+    };
+  }
+
+  rpc Enable2FA (TFARequest) returns (EmptyRequest){
+    option (google.api.http) = {
+      put: "/auth/enable2fa"
+      body: "tfa"
+    };
+  }
+
+  rpc Verify2FA (TFARequest) returns (LoginResponse){
+    option (google.api.http) = {
+      post: "/auth/verify2fa"
+      body: "tfa"
+    };
+  }
+
+  rpc Disable2FA (UserIdRequest) returns (EmptyRequest){
+    option (google.api.http) = {
+      put: "/auth/disable2fa/{userId}"
+    };
+  }
+
   rpc UpdatePasswordRequest (NewPasswordRequest) returns (GetResponse){
     option (google.api.http) = {
       put: "/users"
@@ -141,6 +167,7 @@ message User {
   repeated string interests = 13;
   bool private = 14;
   string role = 15;
+  bool TFAEnabled = 16;
 }
 
 message Experience{
@@ -155,6 +182,15 @@ message Experience{
 
 message UserIdRequest{
   string userId = 1;
+}
+
+message TFARequest{
+  Tfa tfa = 1;
+}
+
+message Tfa{
+  string userId = 1;
+  string code = 2;
 }
 
 message GetResponse{
@@ -262,5 +298,9 @@ message RemoveSkillRequest{
 message RemoveInterestRequest{
   string userId = 1;
   string interest = 2;
+}
+
+message TFAResponse{
+  bytes qrCode = 1;
 }
 
