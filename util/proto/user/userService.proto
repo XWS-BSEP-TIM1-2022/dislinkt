@@ -245,7 +245,8 @@ message NewPasswordRequest{
 message NewPassword{
   string userId = 1;
   string password = 2;
-  string oldPassword = 3;
+  string confirmNewPassword = 3;
+  string oldPassword = 4;
 }
 
 message ExperienceRequest{
