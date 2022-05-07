@@ -68,6 +68,37 @@ service PostService {
       delete: "/comments/{id}"
     };
   };
+
+  rpc GetReactionRequest (ReactionIdRequest) returns (ReactionResponse) {
+    option(google.api.http) = {
+      get: "/reactions/{id}"
+    };
+  };
+
+  rpc GetAllReactionsRequest (EmptyRequest) returns (ReactionsResponse) {
+    option(google.api.http) = {
+      get: "/reaction"
+    };
+  };
+
+  rpc GetAllReactionsFromPostRequest (PostReactionRequest) returns (ReactionsResponse) {
+    option(google.api.http) = {
+      get: "/posts/{postId}/reactions"
+    };
+  };
+
+  rpc CreateReactionRequest (ReactionRequest) returns (ReactionResponse) {
+    option(google.api.http) = {
+      post: "/posts/{postId}/reactions"
+      body: "reaction"
+    };
+  };
+
+  rpc DeleteReactionRequest (ReactionIdRequest) returns (EmptyRequest) {
+    option (google.api.http) = {
+      delete: "/reactions/{id}"
+    };
+  };
 }
 
 message EmptyRequest {}
@@ -134,4 +165,35 @@ message CommentRequest {
   string id = 1;
   string postId = 2;
   Comment comment = 3;
+}
+
+// REACTION
+
+message Reaction {
+  string id = 1;
+  string userId = 2;
+  string postId = 3;
+  bool type = 4;
+}
+
+message ReactionIdRequest {
+  string id = 1;
+}
+
+message PostReactionRequest {
+  string postId = 1;
+}
+
+message ReactionResponse {
+  Reaction reaction = 1;
+}
+
+message ReactionsResponse {
+  repeated Reaction reactions = 1;
+}
+
+message ReactionRequest {
+  string id = 1;
+  string postId = 2;
+  Reaction reaction = 3;
 }

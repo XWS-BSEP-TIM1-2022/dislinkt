@@ -32,6 +32,11 @@ type PostServiceClient interface {
 	GetAllCommentsFromPostRequest(ctx context.Context, in *PostCommentsRequest, opts ...grpc.CallOption) (*CommentsResponse, error)
 	CreateCommentRequest(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*CommentResponse, error)
 	DeleteCommentRequest(ctx context.Context, in *CommentIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	GetReactionRequest(ctx context.Context, in *ReactionIdRequest, opts ...grpc.CallOption) (*ReactionResponse, error)
+	GetAllReactionsRequest(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*ReactionsResponse, error)
+	GetAllReactionsFromPostRequest(ctx context.Context, in *PostReactionRequest, opts ...grpc.CallOption) (*ReactionsResponse, error)
+	CreateReactionRequest(ctx context.Context, in *ReactionRequest, opts ...grpc.CallOption) (*ReactionResponse, error)
+	DeleteReactionRequest(ctx context.Context, in *ReactionIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 }
 
 type postServiceClient struct {
@@ -132,6 +137,51 @@ func (c *postServiceClient) DeleteCommentRequest(ctx context.Context, in *Commen
 	return out, nil
 }
 
+func (c *postServiceClient) GetReactionRequest(ctx context.Context, in *ReactionIdRequest, opts ...grpc.CallOption) (*ReactionResponse, error) {
+	out := new(ReactionResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetReactionRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) GetAllReactionsRequest(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*ReactionsResponse, error) {
+	out := new(ReactionsResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetAllReactionsRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) GetAllReactionsFromPostRequest(ctx context.Context, in *PostReactionRequest, opts ...grpc.CallOption) (*ReactionsResponse, error) {
+	out := new(ReactionsResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetAllReactionsFromPostRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) CreateReactionRequest(ctx context.Context, in *ReactionRequest, opts ...grpc.CallOption) (*ReactionResponse, error) {
+	out := new(ReactionResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/CreateReactionRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) DeleteReactionRequest(ctx context.Context, in *ReactionIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/post.PostService/DeleteReactionRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PostServiceServer is the server API for PostService service.
 // All implementations must embed UnimplementedPostServiceServer
 // for forward compatibility
@@ -146,6 +196,11 @@ type PostServiceServer interface {
 	GetAllCommentsFromPostRequest(context.Context, *PostCommentsRequest) (*CommentsResponse, error)
 	CreateCommentRequest(context.Context, *CommentRequest) (*CommentResponse, error)
 	DeleteCommentRequest(context.Context, *CommentIdRequest) (*EmptyRequest, error)
+	GetReactionRequest(context.Context, *ReactionIdRequest) (*ReactionResponse, error)
+	GetAllReactionsRequest(context.Context, *EmptyRequest) (*ReactionsResponse, error)
+	GetAllReactionsFromPostRequest(context.Context, *PostReactionRequest) (*ReactionsResponse, error)
+	CreateReactionRequest(context.Context, *ReactionRequest) (*ReactionResponse, error)
+	DeleteReactionRequest(context.Context, *ReactionIdRequest) (*EmptyRequest, error)
 	mustEmbedUnimplementedPostServiceServer()
 }
 
@@ -182,6 +237,21 @@ func (UnimplementedPostServiceServer) CreateCommentRequest(context.Context, *Com
 }
 func (UnimplementedPostServiceServer) DeleteCommentRequest(context.Context, *CommentIdRequest) (*EmptyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCommentRequest not implemented")
+}
+func (UnimplementedPostServiceServer) GetReactionRequest(context.Context, *ReactionIdRequest) (*ReactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReactionRequest not implemented")
+}
+func (UnimplementedPostServiceServer) GetAllReactionsRequest(context.Context, *EmptyRequest) (*ReactionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllReactionsRequest not implemented")
+}
+func (UnimplementedPostServiceServer) GetAllReactionsFromPostRequest(context.Context, *PostReactionRequest) (*ReactionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllReactionsFromPostRequest not implemented")
+}
+func (UnimplementedPostServiceServer) CreateReactionRequest(context.Context, *ReactionRequest) (*ReactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateReactionRequest not implemented")
+}
+func (UnimplementedPostServiceServer) DeleteReactionRequest(context.Context, *ReactionIdRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteReactionRequest not implemented")
 }
 func (UnimplementedPostServiceServer) mustEmbedUnimplementedPostServiceServer() {}
 
@@ -376,6 +446,96 @@ func _PostService_DeleteCommentRequest_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostService_GetReactionRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReactionIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).GetReactionRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/GetReactionRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).GetReactionRequest(ctx, req.(*ReactionIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_GetAllReactionsRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).GetAllReactionsRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/GetAllReactionsRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).GetAllReactionsRequest(ctx, req.(*EmptyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_GetAllReactionsFromPostRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostReactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).GetAllReactionsFromPostRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/GetAllReactionsFromPostRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).GetAllReactionsFromPostRequest(ctx, req.(*PostReactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_CreateReactionRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).CreateReactionRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/CreateReactionRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).CreateReactionRequest(ctx, req.(*ReactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_DeleteReactionRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReactionIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).DeleteReactionRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/DeleteReactionRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).DeleteReactionRequest(ctx, req.(*ReactionIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PostService_ServiceDesc is the grpc.ServiceDesc for PostService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -422,6 +582,26 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteCommentRequest",
 			Handler:    _PostService_DeleteCommentRequest_Handler,
+		},
+		{
+			MethodName: "GetReactionRequest",
+			Handler:    _PostService_GetReactionRequest_Handler,
+		},
+		{
+			MethodName: "GetAllReactionsRequest",
+			Handler:    _PostService_GetAllReactionsRequest_Handler,
+		},
+		{
+			MethodName: "GetAllReactionsFromPostRequest",
+			Handler:    _PostService_GetAllReactionsFromPostRequest_Handler,
+		},
+		{
+			MethodName: "CreateReactionRequest",
+			Handler:    _PostService_CreateReactionRequest_Handler,
+		},
+		{
+			MethodName: "DeleteReactionRequest",
+			Handler:    _PostService_DeleteReactionRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
