@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+option go_package = "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/job";
+
+package job;
+
+import "google/api/annotations.proto";
+
+service JobService {
+  rpc GetRequest (JobIdRequest) returns (GetResponse){
+    option(google.api.http) = {
+      get: "/jobs/{jobId}"
+    };
+  };
+
+  rpc GetAllRequest (EmptyRequest) returns (JobsResponse){
+    option(google.api.http) = {
+      get: "/jobs"
+    };
+  };
+
+  rpc PostRequest (UserRequest) returns (GetResponse) {
+    option (google.api.http) = {
+      post: "/jobs"
+      body: "job"
+    };
+  }
+
+  rpc DeleteRequest (JobIdRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      delete: "/jobs/{jobId}"
+    };
+  };
+
+  rpc SearchJobsRequest (SearchRequest) returns (JobsResponse){
+    option(google.api.http) = {
+      get: "/jobs/search"
+    };
+  };
+
+}
+
+message Job {
+  string id = 1;
+  string position = 2;
+  string description = 3;
+  repeated string dailyActivities = 4;
+  repeated string prerequisites = 5;
+  string companyName = 6;
+  string companyLocation = 7;
+  string openDate = 8;
+}
+
+message JobIdRequest{
+  string jobId = 1;
+}
+
+message GetResponse{
+  Job job = 1;
+}
+
+message EmptyRequest{}
+
+message JobsResponse{
+  repeated Job jobs = 1;
+}
+
+message UserRequest{
+  string jobId = 1;
+  Job job = 2;
+}
+
+message SearchRequest{
+  string searchParam = 1;
+}

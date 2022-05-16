@@ -2,6 +2,7 @@ package services
 
 import (
 	connectionService "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/connection"
+	jobService "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/job"
 	postService "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/post"
 	userService "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/user"
 	"google.golang.org/grpc"
@@ -31,6 +32,14 @@ func NewConnectionClient(address string) connectionService.ConnectionServiceClie
 		log.Fatalf("Failed to start gRPC connection to Connection service: %v", err)
 	}
 	return connectionService.NewConnectionServiceClient(conn)
+}
+
+func NewJobClient(address string) jobService.JobServiceClient {
+	conn, err := getConnection(address)
+	if err != nil {
+		log.Fatalf("Failed to start gRPC connection to Connection service: %v", err)
+	}
+	return jobService.NewJobServiceClient(conn)
 }
 
 func getConnection(address string) (*grpc.ClientConn, error) {
