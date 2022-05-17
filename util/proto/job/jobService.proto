@@ -49,6 +49,7 @@ message Job {
   string companyName = 6;
   string companyLocation = 7;
   string openDate = 8;
+  string userId = 9;
 }
 
 message JobIdRequest{

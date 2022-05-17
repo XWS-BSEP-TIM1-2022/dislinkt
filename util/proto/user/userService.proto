@@ -65,6 +65,12 @@ service UserService {
     };
   }
 
+  rpc IsApiTokenValid (AuthRequest) returns (UserIdRequest){
+    option (google.api.http) = {
+      get: "/auth/api-token"
+    };
+  }
+
   rpc GetQR2FA (UserIdRequest) returns (TFAResponse){
     option (google.api.http) = {
       put: "/auth/getQR2fa/{userId}"
@@ -148,6 +154,24 @@ service UserService {
       delete: "/users/removeInterest/{userId}/{interest}"
     };
   }
+
+  rpc ApiTokenRequest (UserIdRequest) returns (ApiTokenResponse){
+    option(google.api.http) = {
+      get: "/users/api-token/{userId}"
+    };
+  };
+
+  rpc ApiTokenCreateRequest (UserIdRequest) returns (ApiTokenResponse){
+    option(google.api.http) = {
+      get: "/users/api-token/new/{userId}"
+    };
+  };
+
+  rpc ApiTokenRemoveRequest (UserIdRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      delete: "/users/api-token/{userId}"
+    };
+  };
 }
 
 
@@ -231,7 +255,7 @@ message SearchRequest{
 }
 
 message AuthRequest{
-  string jwtToken = 1;
+  string token = 1;
 }
 
 message AuthResponse{
@@ -305,3 +329,6 @@ message TFAResponse{
   bytes qrCode = 1;
 }
 
+message ApiTokenResponse{
+string ApiToken = 1;
+}

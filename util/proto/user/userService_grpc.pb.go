@@ -31,6 +31,7 @@ type UserServiceClient interface {
 	SearchUsersRequest(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*UsersResponse, error)
 	LoginRequest(ctx context.Context, in *CredentialsRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	IsUserAuthenticated(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error)
+	IsApiTokenValid(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*UserIdRequest, error)
 	GetQR2FA(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*TFAResponse, error)
 	Enable2FA(ctx context.Context, in *TFARequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	Verify2FA(ctx context.Context, in *TFARequest, opts ...grpc.CallOption) (*LoginResponse, error)
@@ -44,6 +45,9 @@ type UserServiceClient interface {
 	AddUserInterest(ctx context.Context, in *NewInterestRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	RemoveSkill(ctx context.Context, in *RemoveSkillRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	RemoveInterest(ctx context.Context, in *RemoveInterestRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	ApiTokenRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*ApiTokenResponse, error)
+	ApiTokenCreateRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*ApiTokenResponse, error)
+	ApiTokenRemoveRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 }
 
 type userServiceClient struct {
@@ -129,6 +133,15 @@ func (c *userServiceClient) LoginRequest(ctx context.Context, in *CredentialsReq
 func (c *userServiceClient) IsUserAuthenticated(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error) {
 	out := new(AuthResponse)
 	err := c.cc.Invoke(ctx, "/user.UserService/IsUserAuthenticated", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) IsApiTokenValid(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*UserIdRequest, error) {
+	out := new(UserIdRequest)
+	err := c.cc.Invoke(ctx, "/user.UserService/IsApiTokenValid", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -252,6 +265,33 @@ func (c *userServiceClient) RemoveInterest(ctx context.Context, in *RemoveIntere
 	return out, nil
 }
 
+func (c *userServiceClient) ApiTokenRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*ApiTokenResponse, error) {
+	out := new(ApiTokenResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/ApiTokenRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) ApiTokenCreateRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*ApiTokenResponse, error) {
+	out := new(ApiTokenResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/ApiTokenCreateRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) ApiTokenRemoveRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/user.UserService/ApiTokenRemoveRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -265,6 +305,7 @@ type UserServiceServer interface {
 	SearchUsersRequest(context.Context, *SearchRequest) (*UsersResponse, error)
 	LoginRequest(context.Context, *CredentialsRequest) (*LoginResponse, error)
 	IsUserAuthenticated(context.Context, *AuthRequest) (*AuthResponse, error)
+	IsApiTokenValid(context.Context, *AuthRequest) (*UserIdRequest, error)
 	GetQR2FA(context.Context, *UserIdRequest) (*TFAResponse, error)
 	Enable2FA(context.Context, *TFARequest) (*EmptyRequest, error)
 	Verify2FA(context.Context, *TFARequest) (*LoginResponse, error)
@@ -278,6 +319,9 @@ type UserServiceServer interface {
 	AddUserInterest(context.Context, *NewInterestRequest) (*EmptyRequest, error)
 	RemoveSkill(context.Context, *RemoveSkillRequest) (*EmptyRequest, error)
 	RemoveInterest(context.Context, *RemoveInterestRequest) (*EmptyRequest, error)
+	ApiTokenRequest(context.Context, *UserIdRequest) (*ApiTokenResponse, error)
+	ApiTokenCreateRequest(context.Context, *UserIdRequest) (*ApiTokenResponse, error)
+	ApiTokenRemoveRequest(context.Context, *UserIdRequest) (*EmptyRequest, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -311,6 +355,9 @@ func (UnimplementedUserServiceServer) LoginRequest(context.Context, *Credentials
 }
 func (UnimplementedUserServiceServer) IsUserAuthenticated(context.Context, *AuthRequest) (*AuthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsUserAuthenticated not implemented")
+}
+func (UnimplementedUserServiceServer) IsApiTokenValid(context.Context, *AuthRequest) (*UserIdRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsApiTokenValid not implemented")
 }
 func (UnimplementedUserServiceServer) GetQR2FA(context.Context, *UserIdRequest) (*TFAResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetQR2FA not implemented")
@@ -350,6 +397,15 @@ func (UnimplementedUserServiceServer) RemoveSkill(context.Context, *RemoveSkillR
 }
 func (UnimplementedUserServiceServer) RemoveInterest(context.Context, *RemoveInterestRequest) (*EmptyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveInterest not implemented")
+}
+func (UnimplementedUserServiceServer) ApiTokenRequest(context.Context, *UserIdRequest) (*ApiTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApiTokenRequest not implemented")
+}
+func (UnimplementedUserServiceServer) ApiTokenCreateRequest(context.Context, *UserIdRequest) (*ApiTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApiTokenCreateRequest not implemented")
+}
+func (UnimplementedUserServiceServer) ApiTokenRemoveRequest(context.Context, *UserIdRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApiTokenRemoveRequest not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -522,6 +578,24 @@ func _UserService_IsUserAuthenticated_Handler(srv interface{}, ctx context.Conte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).IsUserAuthenticated(ctx, req.(*AuthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_IsApiTokenValid_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).IsApiTokenValid(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/IsApiTokenValid",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).IsApiTokenValid(ctx, req.(*AuthRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -760,6 +834,60 @@ func _UserService_RemoveInterest_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_ApiTokenRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ApiTokenRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/ApiTokenRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ApiTokenRequest(ctx, req.(*UserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_ApiTokenCreateRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ApiTokenCreateRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/ApiTokenCreateRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ApiTokenCreateRequest(ctx, req.(*UserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_ApiTokenRemoveRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ApiTokenRemoveRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/ApiTokenRemoveRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ApiTokenRemoveRequest(ctx, req.(*UserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -802,6 +930,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "IsUserAuthenticated",
 			Handler:    _UserService_IsUserAuthenticated_Handler,
+		},
+		{
+			MethodName: "IsApiTokenValid",
+			Handler:    _UserService_IsApiTokenValid_Handler,
 		},
 		{
 			MethodName: "GetQR2FA",
@@ -854,6 +986,18 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveInterest",
 			Handler:    _UserService_RemoveInterest_Handler,
+		},
+		{
+			MethodName: "ApiTokenRequest",
+			Handler:    _UserService_ApiTokenRequest_Handler,
+		},
+		{
+			MethodName: "ApiTokenCreateRequest",
+			Handler:    _UserService_ApiTokenCreateRequest_Handler,
+		},
+		{
+			MethodName: "ApiTokenRemoveRequest",
+			Handler:    _UserService_ApiTokenRemoveRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
