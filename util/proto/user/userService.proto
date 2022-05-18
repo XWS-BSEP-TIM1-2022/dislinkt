@@ -191,6 +191,18 @@ service UserService {
       body: "passwordRecovery"
     };
   }
+
+  rpc PasswordlessLoginStart (UsernameRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      get: "/passwordless/{username}"
+    };
+  }
+
+  rpc PasswordlessLogin (PasswordlessLoginRequest) returns (LoginResponse){
+    option(google.api.http) = {
+      get: "/login/{userId}/{loginId}"
+    };
+  }
 }
 
 
@@ -372,4 +384,9 @@ message NewPasswordRecoveryRequest{
 message PasswordRecovery{
   string newPassword = 1;
   string confirmPassword = 2;
+}
+
+message PasswordlessLoginRequest{
+  string userId = 1;
+  string loginId = 2;
 }

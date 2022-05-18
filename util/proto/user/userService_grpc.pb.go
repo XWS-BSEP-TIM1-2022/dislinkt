@@ -51,6 +51,8 @@ type UserServiceClient interface {
 	ApiTokenRemoveRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	CreatePasswordRecoveryRequest(ctx context.Context, in *UsernameRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	PasswordRecoveryRequest(ctx context.Context, in *NewPasswordRecoveryRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	PasswordlessLoginStart(ctx context.Context, in *UsernameRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	PasswordlessLogin(ctx context.Context, in *PasswordlessLoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 }
 
 type userServiceClient struct {
@@ -322,6 +324,24 @@ func (c *userServiceClient) PasswordRecoveryRequest(ctx context.Context, in *New
 	return out, nil
 }
 
+func (c *userServiceClient) PasswordlessLoginStart(ctx context.Context, in *UsernameRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/user.UserService/PasswordlessLoginStart", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) PasswordlessLogin(ctx context.Context, in *PasswordlessLoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/PasswordlessLogin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -355,6 +375,8 @@ type UserServiceServer interface {
 	ApiTokenRemoveRequest(context.Context, *UserIdRequest) (*EmptyRequest, error)
 	CreatePasswordRecoveryRequest(context.Context, *UsernameRequest) (*EmptyRequest, error)
 	PasswordRecoveryRequest(context.Context, *NewPasswordRecoveryRequest) (*EmptyRequest, error)
+	PasswordlessLoginStart(context.Context, *UsernameRequest) (*EmptyRequest, error)
+	PasswordlessLogin(context.Context, *PasswordlessLoginRequest) (*LoginResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -448,6 +470,12 @@ func (UnimplementedUserServiceServer) CreatePasswordRecoveryRequest(context.Cont
 }
 func (UnimplementedUserServiceServer) PasswordRecoveryRequest(context.Context, *NewPasswordRecoveryRequest) (*EmptyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PasswordRecoveryRequest not implemented")
+}
+func (UnimplementedUserServiceServer) PasswordlessLoginStart(context.Context, *UsernameRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PasswordlessLoginStart not implemented")
+}
+func (UnimplementedUserServiceServer) PasswordlessLogin(context.Context, *PasswordlessLoginRequest) (*LoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PasswordlessLogin not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -984,6 +1012,42 @@ func _UserService_PasswordRecoveryRequest_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_PasswordlessLoginStart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UsernameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).PasswordlessLoginStart(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/PasswordlessLoginStart",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).PasswordlessLoginStart(ctx, req.(*UsernameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_PasswordlessLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PasswordlessLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).PasswordlessLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/PasswordlessLogin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).PasswordlessLogin(ctx, req.(*PasswordlessLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1106,6 +1170,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PasswordRecoveryRequest",
 			Handler:    _UserService_PasswordRecoveryRequest_Handler,
+		},
+		{
+			MethodName: "PasswordlessLoginStart",
+			Handler:    _UserService_PasswordlessLoginStart_Handler,
+		},
+		{
+			MethodName: "PasswordlessLogin",
+			Handler:    _UserService_PasswordlessLogin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
