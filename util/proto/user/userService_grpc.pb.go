@@ -30,6 +30,7 @@ type UserServiceClient interface {
 	DeleteRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	SearchUsersRequest(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*UsersResponse, error)
 	LoginRequest(ctx context.Context, in *CredentialsRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	ConfirmRegistration(ctx context.Context, in *ConfirmationRequest, opts ...grpc.CallOption) (*ConfirmationResponse, error)
 	IsUserAuthenticated(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error)
 	IsApiTokenValid(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*UserIdRequest, error)
 	GetQR2FA(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*TFAResponse, error)
@@ -124,6 +125,15 @@ func (c *userServiceClient) SearchUsersRequest(ctx context.Context, in *SearchRe
 func (c *userServiceClient) LoginRequest(ctx context.Context, in *CredentialsRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
 	out := new(LoginResponse)
 	err := c.cc.Invoke(ctx, "/user.UserService/LoginRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) ConfirmRegistration(ctx context.Context, in *ConfirmationRequest, opts ...grpc.CallOption) (*ConfirmationResponse, error) {
+	out := new(ConfirmationResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/ConfirmRegistration", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -304,6 +314,7 @@ type UserServiceServer interface {
 	DeleteRequest(context.Context, *UserIdRequest) (*EmptyRequest, error)
 	SearchUsersRequest(context.Context, *SearchRequest) (*UsersResponse, error)
 	LoginRequest(context.Context, *CredentialsRequest) (*LoginResponse, error)
+	ConfirmRegistration(context.Context, *ConfirmationRequest) (*ConfirmationResponse, error)
 	IsUserAuthenticated(context.Context, *AuthRequest) (*AuthResponse, error)
 	IsApiTokenValid(context.Context, *AuthRequest) (*UserIdRequest, error)
 	GetQR2FA(context.Context, *UserIdRequest) (*TFAResponse, error)
@@ -352,6 +363,9 @@ func (UnimplementedUserServiceServer) SearchUsersRequest(context.Context, *Searc
 }
 func (UnimplementedUserServiceServer) LoginRequest(context.Context, *CredentialsRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginRequest not implemented")
+}
+func (UnimplementedUserServiceServer) ConfirmRegistration(context.Context, *ConfirmationRequest) (*ConfirmationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmRegistration not implemented")
 }
 func (UnimplementedUserServiceServer) IsUserAuthenticated(context.Context, *AuthRequest) (*AuthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsUserAuthenticated not implemented")
@@ -560,6 +574,24 @@ func _UserService_LoginRequest_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).LoginRequest(ctx, req.(*CredentialsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_ConfirmRegistration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfirmationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ConfirmRegistration(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/ConfirmRegistration",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ConfirmRegistration(ctx, req.(*ConfirmationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -926,6 +958,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginRequest",
 			Handler:    _UserService_LoginRequest_Handler,
+		},
+		{
+			MethodName: "ConfirmRegistration",
+			Handler:    _UserService_ConfirmRegistration_Handler,
 		},
 		{
 			MethodName: "IsUserAuthenticated",

@@ -59,6 +59,12 @@ service UserService {
     };
   }
 
+  rpc ConfirmRegistration (ConfirmationRequest) returns (ConfirmationResponse){
+    option (google.api.http) = {
+      get: "/auth/verify/{confirmationId}"
+    };
+  }
+
   rpc IsUserAuthenticated (AuthRequest) returns (AuthResponse){
     option (google.api.http) = {
       get: "/auth"
@@ -331,4 +337,12 @@ message TFAResponse{
 
 message ApiTokenResponse{
 string ApiToken = 1;
+}
+
+message ConfirmationRequest{
+  string confirmationId = 1;
+}
+
+message ConfirmationResponse{
+  string response_message = 1;
 }
