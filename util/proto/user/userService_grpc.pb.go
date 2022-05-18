@@ -49,6 +49,8 @@ type UserServiceClient interface {
 	ApiTokenRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*ApiTokenResponse, error)
 	ApiTokenCreateRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*ApiTokenResponse, error)
 	ApiTokenRemoveRequest(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	CreatePasswordRecoveryRequest(ctx context.Context, in *UsernameRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	PasswordRecoveryRequest(ctx context.Context, in *NewPasswordRecoveryRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 }
 
 type userServiceClient struct {
@@ -302,6 +304,24 @@ func (c *userServiceClient) ApiTokenRemoveRequest(ctx context.Context, in *UserI
 	return out, nil
 }
 
+func (c *userServiceClient) CreatePasswordRecoveryRequest(ctx context.Context, in *UsernameRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/user.UserService/CreatePasswordRecoveryRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) PasswordRecoveryRequest(ctx context.Context, in *NewPasswordRecoveryRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/user.UserService/PasswordRecoveryRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -333,6 +353,8 @@ type UserServiceServer interface {
 	ApiTokenRequest(context.Context, *UserIdRequest) (*ApiTokenResponse, error)
 	ApiTokenCreateRequest(context.Context, *UserIdRequest) (*ApiTokenResponse, error)
 	ApiTokenRemoveRequest(context.Context, *UserIdRequest) (*EmptyRequest, error)
+	CreatePasswordRecoveryRequest(context.Context, *UsernameRequest) (*EmptyRequest, error)
+	PasswordRecoveryRequest(context.Context, *NewPasswordRecoveryRequest) (*EmptyRequest, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -420,6 +442,12 @@ func (UnimplementedUserServiceServer) ApiTokenCreateRequest(context.Context, *Us
 }
 func (UnimplementedUserServiceServer) ApiTokenRemoveRequest(context.Context, *UserIdRequest) (*EmptyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApiTokenRemoveRequest not implemented")
+}
+func (UnimplementedUserServiceServer) CreatePasswordRecoveryRequest(context.Context, *UsernameRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePasswordRecoveryRequest not implemented")
+}
+func (UnimplementedUserServiceServer) PasswordRecoveryRequest(context.Context, *NewPasswordRecoveryRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PasswordRecoveryRequest not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -920,6 +948,42 @@ func _UserService_ApiTokenRemoveRequest_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_CreatePasswordRecoveryRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UsernameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).CreatePasswordRecoveryRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/CreatePasswordRecoveryRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).CreatePasswordRecoveryRequest(ctx, req.(*UsernameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_PasswordRecoveryRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NewPasswordRecoveryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).PasswordRecoveryRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/PasswordRecoveryRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).PasswordRecoveryRequest(ctx, req.(*NewPasswordRecoveryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1034,6 +1098,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ApiTokenRemoveRequest",
 			Handler:    _UserService_ApiTokenRemoveRequest_Handler,
+		},
+		{
+			MethodName: "CreatePasswordRecoveryRequest",
+			Handler:    _UserService_CreatePasswordRecoveryRequest_Handler,
+		},
+		{
+			MethodName: "PasswordRecoveryRequest",
+			Handler:    _UserService_PasswordRecoveryRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

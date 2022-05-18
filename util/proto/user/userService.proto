@@ -178,6 +178,19 @@ service UserService {
       delete: "/users/api-token/{userId}"
     };
   };
+
+  rpc CreatePasswordRecoveryRequest (UsernameRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      get: "/users/auth/password-recovery/{username}"
+    };
+  }
+
+  rpc PasswordRecoveryRequest (NewPasswordRecoveryRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      put: "/users/password-recovery/{recoveryId}"
+      body: "passwordRecovery"
+    };
+  }
 }
 
 
@@ -345,4 +358,18 @@ message ConfirmationRequest{
 
 message ConfirmationResponse{
   string response_message = 1;
+}
+
+message UsernameRequest{
+  string username = 1;
+}
+
+message NewPasswordRecoveryRequest{
+  string recoveryId = 1;
+  PasswordRecovery passwordRecovery = 2;
+}
+
+message PasswordRecovery{
+  string newPassword = 1;
+  string confirmPassword = 2;
 }
