@@ -2255,7 +2255,7 @@ var file_user_userService_proto_rawDesc = []byte{
 	0x74, 0x12, 0x16, 0x0a, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x6c, 0x6f, 0x67,
 	0x69, 0x6e, 0x49, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6c, 0x6f, 0x67, 0x69,
-	0x6e, 0x49, 0x64, 0x32, 0x8a, 0x18, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76,
+	0x6e, 0x49, 0x64, 0x32, 0xec, 0x18, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76,
 	0x69, 0x63, 0x65, 0x12, 0x4d, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
 	0x74, 0x12, 0x13, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x49, 0x64, 0x52,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x47, 0x65,
@@ -2448,11 +2448,17 @@ var file_user_userService_proto_rawDesc = []byte{
 	0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x21, 0x82,
 	0xd3, 0xe4, 0x93, 0x02, 0x1b, 0x12, 0x19, 0x2f, 0x6c, 0x6f, 0x67, 0x69, 0x6e, 0x2f, 0x7b, 0x75,
 	0x73, 0x65, 0x72, 0x49, 0x64, 0x7d, 0x2f, 0x7b, 0x6c, 0x6f, 0x67, 0x69, 0x6e, 0x49, 0x64, 0x7d,
-	0x42, 0x38, 0x5a, 0x36, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x58,
-	0x57, 0x53, 0x2d, 0x42, 0x53, 0x45, 0x50, 0x2d, 0x54, 0x49, 0x4d, 0x31, 0x2d, 0x32, 0x30, 0x32,
-	0x32, 0x2f, 0x64, 0x69, 0x73, 0x6c, 0x69, 0x6e, 0x6b, 0x74, 0x2f, 0x75, 0x74, 0x69, 0x6c, 0x2f,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x12, 0x60, 0x0a, 0x14, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c,
+	0x65, 0x50, 0x72, 0x69, 0x76, 0x61, 0x63, 0x79, 0x12, 0x13, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e,
+	0x55, 0x73, 0x65, 0x72, 0x49, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x12, 0x2e,
+	0x75, 0x73, 0x65, 0x72, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x22, 0x1f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x19, 0x1a, 0x17, 0x2f, 0x75, 0x73, 0x65, 0x72,
+	0x73, 0x2f, 0x70, 0x72, 0x69, 0x76, 0x61, 0x63, 0x79, 0x2f, 0x7b, 0x75, 0x73, 0x65, 0x72, 0x49,
+	0x64, 0x7d, 0x42, 0x38, 0x5a, 0x36, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
+	0x2f, 0x58, 0x57, 0x53, 0x2d, 0x42, 0x53, 0x45, 0x50, 0x2d, 0x54, 0x49, 0x4d, 0x31, 0x2d, 0x32,
+	0x30, 0x32, 0x32, 0x2f, 0x64, 0x69, 0x73, 0x6c, 0x69, 0x6e, 0x6b, 0x74, 0x2f, 0x75, 0x74, 0x69,
+	0x6c, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2551,39 +2557,41 @@ var file_user_userService_proto_depIdxs = []int32{
 	34, // 40: user.UserService.PasswordRecoveryRequest:input_type -> user.NewPasswordRecoveryRequest
 	33, // 41: user.UserService.PasswordlessLoginStart:input_type -> user.UsernameRequest
 	36, // 42: user.UserService.PasswordlessLogin:input_type -> user.PasswordlessLoginRequest
-	5,  // 43: user.UserService.GetRequest:output_type -> user.GetResponse
-	7,  // 44: user.UserService.GetAllRequest:output_type -> user.UsersResponse
-	5,  // 45: user.UserService.PostRequest:output_type -> user.GetResponse
-	5,  // 46: user.UserService.PostAdminRequest:output_type -> user.GetResponse
-	5,  // 47: user.UserService.UpdateRequest:output_type -> user.GetResponse
-	6,  // 48: user.UserService.DeleteRequest:output_type -> user.EmptyRequest
-	7,  // 49: user.UserService.SearchUsersRequest:output_type -> user.UsersResponse
-	11, // 50: user.UserService.LoginRequest:output_type -> user.LoginResponse
-	32, // 51: user.UserService.ConfirmRegistration:output_type -> user.ConfirmationResponse
-	14, // 52: user.UserService.IsUserAuthenticated:output_type -> user.AuthResponse
-	2,  // 53: user.UserService.IsApiTokenValid:output_type -> user.UserIdRequest
-	29, // 54: user.UserService.GetQR2FA:output_type -> user.TFAResponse
-	6,  // 55: user.UserService.Enable2FA:output_type -> user.EmptyRequest
-	11, // 56: user.UserService.Verify2FA:output_type -> user.LoginResponse
-	6,  // 57: user.UserService.Disable2FA:output_type -> user.EmptyRequest
-	5,  // 58: user.UserService.UpdatePasswordRequest:output_type -> user.GetResponse
-	18, // 59: user.UserService.GetAllUsersExperienceRequest:output_type -> user.ExperienceResponse
-	20, // 60: user.UserService.PostExperienceRequest:output_type -> user.NewExperienceResponse
-	6,  // 61: user.UserService.DeleteExperienceRequest:output_type -> user.EmptyRequest
-	22, // 62: user.UserService.IsUserPrivateRequest:output_type -> user.PrivateResponse
-	6,  // 63: user.UserService.AddUserSkill:output_type -> user.EmptyRequest
-	6,  // 64: user.UserService.AddUserInterest:output_type -> user.EmptyRequest
-	6,  // 65: user.UserService.RemoveSkill:output_type -> user.EmptyRequest
-	6,  // 66: user.UserService.RemoveInterest:output_type -> user.EmptyRequest
-	30, // 67: user.UserService.ApiTokenRequest:output_type -> user.ApiTokenResponse
-	30, // 68: user.UserService.ApiTokenCreateRequest:output_type -> user.ApiTokenResponse
-	6,  // 69: user.UserService.ApiTokenRemoveRequest:output_type -> user.EmptyRequest
-	6,  // 70: user.UserService.CreatePasswordRecoveryRequest:output_type -> user.EmptyRequest
-	6,  // 71: user.UserService.PasswordRecoveryRequest:output_type -> user.EmptyRequest
-	6,  // 72: user.UserService.PasswordlessLoginStart:output_type -> user.EmptyRequest
-	11, // 73: user.UserService.PasswordlessLogin:output_type -> user.LoginResponse
-	43, // [43:74] is the sub-list for method output_type
-	12, // [12:43] is the sub-list for method input_type
+	2,  // 43: user.UserService.ChangeProfilePrivacy:input_type -> user.UserIdRequest
+	5,  // 44: user.UserService.GetRequest:output_type -> user.GetResponse
+	7,  // 45: user.UserService.GetAllRequest:output_type -> user.UsersResponse
+	5,  // 46: user.UserService.PostRequest:output_type -> user.GetResponse
+	5,  // 47: user.UserService.PostAdminRequest:output_type -> user.GetResponse
+	5,  // 48: user.UserService.UpdateRequest:output_type -> user.GetResponse
+	6,  // 49: user.UserService.DeleteRequest:output_type -> user.EmptyRequest
+	7,  // 50: user.UserService.SearchUsersRequest:output_type -> user.UsersResponse
+	11, // 51: user.UserService.LoginRequest:output_type -> user.LoginResponse
+	32, // 52: user.UserService.ConfirmRegistration:output_type -> user.ConfirmationResponse
+	14, // 53: user.UserService.IsUserAuthenticated:output_type -> user.AuthResponse
+	2,  // 54: user.UserService.IsApiTokenValid:output_type -> user.UserIdRequest
+	29, // 55: user.UserService.GetQR2FA:output_type -> user.TFAResponse
+	6,  // 56: user.UserService.Enable2FA:output_type -> user.EmptyRequest
+	11, // 57: user.UserService.Verify2FA:output_type -> user.LoginResponse
+	6,  // 58: user.UserService.Disable2FA:output_type -> user.EmptyRequest
+	5,  // 59: user.UserService.UpdatePasswordRequest:output_type -> user.GetResponse
+	18, // 60: user.UserService.GetAllUsersExperienceRequest:output_type -> user.ExperienceResponse
+	20, // 61: user.UserService.PostExperienceRequest:output_type -> user.NewExperienceResponse
+	6,  // 62: user.UserService.DeleteExperienceRequest:output_type -> user.EmptyRequest
+	22, // 63: user.UserService.IsUserPrivateRequest:output_type -> user.PrivateResponse
+	6,  // 64: user.UserService.AddUserSkill:output_type -> user.EmptyRequest
+	6,  // 65: user.UserService.AddUserInterest:output_type -> user.EmptyRequest
+	6,  // 66: user.UserService.RemoveSkill:output_type -> user.EmptyRequest
+	6,  // 67: user.UserService.RemoveInterest:output_type -> user.EmptyRequest
+	30, // 68: user.UserService.ApiTokenRequest:output_type -> user.ApiTokenResponse
+	30, // 69: user.UserService.ApiTokenCreateRequest:output_type -> user.ApiTokenResponse
+	6,  // 70: user.UserService.ApiTokenRemoveRequest:output_type -> user.EmptyRequest
+	6,  // 71: user.UserService.CreatePasswordRecoveryRequest:output_type -> user.EmptyRequest
+	6,  // 72: user.UserService.PasswordRecoveryRequest:output_type -> user.EmptyRequest
+	6,  // 73: user.UserService.PasswordlessLoginStart:output_type -> user.EmptyRequest
+	11, // 74: user.UserService.PasswordlessLogin:output_type -> user.LoginResponse
+	6,  // 75: user.UserService.ChangeProfilePrivacy:output_type -> user.EmptyRequest
+	44, // [44:76] is the sub-list for method output_type
+	12, // [12:44] is the sub-list for method input_type
 	12, // [12:12] is the sub-list for extension type_name
 	12, // [12:12] is the sub-list for extension extendee
 	0,  // [0:12] is the sub-list for field type_name

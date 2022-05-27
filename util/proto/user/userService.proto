@@ -203,6 +203,12 @@ service UserService {
       get: "/login/{userId}/{loginId}"
     };
   }
+
+  rpc ChangeProfilePrivacy (UserIdRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      put: "/users/privacy/{userId}"
+    };
+  }
 }
 
 

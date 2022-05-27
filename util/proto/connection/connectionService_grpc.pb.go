@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ConnectionServiceClient interface {
 	NewUserConnection(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
 	ApproveConnection(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
+	ApproveAllConnection(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	RejectConnection(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
 	DeleteConnection(ctx context.Context, in *Connection, opts ...grpc.CallOption) (*UserConnectionResponse, error)
 	GetAllConnections(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*AllConnectionResponse, error)
@@ -53,6 +54,15 @@ func (c *connectionServiceClient) NewUserConnection(ctx context.Context, in *Use
 func (c *connectionServiceClient) ApproveConnection(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error) {
 	out := new(UserConnectionResponse)
 	err := c.cc.Invoke(ctx, "/connection.ConnectionService/ApproveConnection", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *connectionServiceClient) ApproveAllConnection(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/connection.ConnectionService/ApproveAllConnection", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -128,6 +138,7 @@ func (c *connectionServiceClient) GetAllPendingConnectionsByUserId(ctx context.C
 type ConnectionServiceServer interface {
 	NewUserConnection(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
 	ApproveConnection(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
+	ApproveAllConnection(context.Context, *UserIdRequest) (*EmptyRequest, error)
 	RejectConnection(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
 	DeleteConnection(context.Context, *Connection) (*UserConnectionResponse, error)
 	GetAllConnections(context.Context, *UserIdRequest) (*AllConnectionResponse, error)
@@ -147,6 +158,9 @@ func (UnimplementedConnectionServiceServer) NewUserConnection(context.Context, *
 }
 func (UnimplementedConnectionServiceServer) ApproveConnection(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApproveConnection not implemented")
+}
+func (UnimplementedConnectionServiceServer) ApproveAllConnection(context.Context, *UserIdRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApproveAllConnection not implemented")
 }
 func (UnimplementedConnectionServiceServer) RejectConnection(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RejectConnection not implemented")
@@ -214,6 +228,24 @@ func _ConnectionService_ApproveConnection_Handler(srv interface{}, ctx context.C
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ConnectionServiceServer).ApproveConnection(ctx, req.(*UserConnectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ConnectionService_ApproveAllConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConnectionServiceServer).ApproveAllConnection(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connection.ConnectionService/ApproveAllConnection",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConnectionServiceServer).ApproveAllConnection(ctx, req.(*UserIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -358,6 +390,10 @@ var ConnectionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ApproveConnection",
 			Handler:    _ConnectionService_ApproveConnection_Handler,
+		},
+		{
+			MethodName: "ApproveAllConnection",
+			Handler:    _ConnectionService_ApproveAllConnection_Handler,
 		},
 		{
 			MethodName: "RejectConnection",

@@ -53,6 +53,7 @@ type UserServiceClient interface {
 	PasswordRecoveryRequest(ctx context.Context, in *NewPasswordRecoveryRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	PasswordlessLoginStart(ctx context.Context, in *UsernameRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	PasswordlessLogin(ctx context.Context, in *PasswordlessLoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	ChangeProfilePrivacy(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 }
 
 type userServiceClient struct {
@@ -342,6 +343,15 @@ func (c *userServiceClient) PasswordlessLogin(ctx context.Context, in *Passwordl
 	return out, nil
 }
 
+func (c *userServiceClient) ChangeProfilePrivacy(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/user.UserService/ChangeProfilePrivacy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -377,6 +387,7 @@ type UserServiceServer interface {
 	PasswordRecoveryRequest(context.Context, *NewPasswordRecoveryRequest) (*EmptyRequest, error)
 	PasswordlessLoginStart(context.Context, *UsernameRequest) (*EmptyRequest, error)
 	PasswordlessLogin(context.Context, *PasswordlessLoginRequest) (*LoginResponse, error)
+	ChangeProfilePrivacy(context.Context, *UserIdRequest) (*EmptyRequest, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -476,6 +487,9 @@ func (UnimplementedUserServiceServer) PasswordlessLoginStart(context.Context, *U
 }
 func (UnimplementedUserServiceServer) PasswordlessLogin(context.Context, *PasswordlessLoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PasswordlessLogin not implemented")
+}
+func (UnimplementedUserServiceServer) ChangeProfilePrivacy(context.Context, *UserIdRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeProfilePrivacy not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -1048,6 +1062,24 @@ func _UserService_PasswordlessLogin_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_ChangeProfilePrivacy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ChangeProfilePrivacy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/ChangeProfilePrivacy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ChangeProfilePrivacy(ctx, req.(*UserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1178,6 +1210,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PasswordlessLogin",
 			Handler:    _UserService_PasswordlessLogin_Handler,
+		},
+		{
+			MethodName: "ChangeProfilePrivacy",
+			Handler:    _UserService_ChangeProfilePrivacy_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

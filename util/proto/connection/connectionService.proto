@@ -21,6 +21,12 @@ service ConnectionService {
     };
   }
 
+  rpc ApproveAllConnection(UserIdRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      put: "/connections/approve/all/{userId}",
+    };
+  }
+
   rpc RejectConnection(UserConnectionRequest) returns (UserConnectionResponse){
     option(google.api.http) = {
       put: "/connections/reject",
@@ -83,6 +89,9 @@ message UserConnectionResponse{
 
 message UserIdRequest{
   string userId = 1;
+}
+
+message EmptyRequest{
 }
 
 message AllConnectionResponse{
