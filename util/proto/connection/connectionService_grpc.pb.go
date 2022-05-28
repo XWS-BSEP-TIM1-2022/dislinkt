@@ -32,6 +32,10 @@ type ConnectionServiceClient interface {
 	GetFollowers(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*AllConnectionResponse, error)
 	GetAllRequestConnectionsByUserId(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*AllConnectionResponse, error)
 	GetAllPendingConnectionsByUserId(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*AllConnectionResponse, error)
+	BlockUser(ctx context.Context, in *BlockUserRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	UnblockUser(ctx context.Context, in *BlockUserRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
+	IsBlocked(ctx context.Context, in *Block, opts ...grpc.CallOption) (*IsBlockedResponse, error)
+	IsBlockedAny(ctx context.Context, in *Block, opts ...grpc.CallOption) (*IsBlockedResponse, error)
 }
 
 type connectionServiceClient struct {
@@ -132,6 +136,42 @@ func (c *connectionServiceClient) GetAllPendingConnectionsByUserId(ctx context.C
 	return out, nil
 }
 
+func (c *connectionServiceClient) BlockUser(ctx context.Context, in *BlockUserRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/connection.ConnectionService/BlockUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *connectionServiceClient) UnblockUser(ctx context.Context, in *BlockUserRequest, opts ...grpc.CallOption) (*EmptyRequest, error) {
+	out := new(EmptyRequest)
+	err := c.cc.Invoke(ctx, "/connection.ConnectionService/UnblockUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *connectionServiceClient) IsBlocked(ctx context.Context, in *Block, opts ...grpc.CallOption) (*IsBlockedResponse, error) {
+	out := new(IsBlockedResponse)
+	err := c.cc.Invoke(ctx, "/connection.ConnectionService/IsBlocked", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *connectionServiceClient) IsBlockedAny(ctx context.Context, in *Block, opts ...grpc.CallOption) (*IsBlockedResponse, error) {
+	out := new(IsBlockedResponse)
+	err := c.cc.Invoke(ctx, "/connection.ConnectionService/IsBlockedAny", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ConnectionServiceServer is the server API for ConnectionService service.
 // All implementations must embed UnimplementedConnectionServiceServer
 // for forward compatibility
@@ -146,6 +186,10 @@ type ConnectionServiceServer interface {
 	GetFollowers(context.Context, *UserIdRequest) (*AllConnectionResponse, error)
 	GetAllRequestConnectionsByUserId(context.Context, *UserIdRequest) (*AllConnectionResponse, error)
 	GetAllPendingConnectionsByUserId(context.Context, *UserIdRequest) (*AllConnectionResponse, error)
+	BlockUser(context.Context, *BlockUserRequest) (*EmptyRequest, error)
+	UnblockUser(context.Context, *BlockUserRequest) (*EmptyRequest, error)
+	IsBlocked(context.Context, *Block) (*IsBlockedResponse, error)
+	IsBlockedAny(context.Context, *Block) (*IsBlockedResponse, error)
 	mustEmbedUnimplementedConnectionServiceServer()
 }
 
@@ -182,6 +226,18 @@ func (UnimplementedConnectionServiceServer) GetAllRequestConnectionsByUserId(con
 }
 func (UnimplementedConnectionServiceServer) GetAllPendingConnectionsByUserId(context.Context, *UserIdRequest) (*AllConnectionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllPendingConnectionsByUserId not implemented")
+}
+func (UnimplementedConnectionServiceServer) BlockUser(context.Context, *BlockUserRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BlockUser not implemented")
+}
+func (UnimplementedConnectionServiceServer) UnblockUser(context.Context, *BlockUserRequest) (*EmptyRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnblockUser not implemented")
+}
+func (UnimplementedConnectionServiceServer) IsBlocked(context.Context, *Block) (*IsBlockedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsBlocked not implemented")
+}
+func (UnimplementedConnectionServiceServer) IsBlockedAny(context.Context, *Block) (*IsBlockedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsBlockedAny not implemented")
 }
 func (UnimplementedConnectionServiceServer) mustEmbedUnimplementedConnectionServiceServer() {}
 
@@ -376,6 +432,78 @@ func _ConnectionService_GetAllPendingConnectionsByUserId_Handler(srv interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ConnectionService_BlockUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BlockUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConnectionServiceServer).BlockUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connection.ConnectionService/BlockUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConnectionServiceServer).BlockUser(ctx, req.(*BlockUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ConnectionService_UnblockUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BlockUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConnectionServiceServer).UnblockUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connection.ConnectionService/UnblockUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConnectionServiceServer).UnblockUser(ctx, req.(*BlockUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ConnectionService_IsBlocked_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Block)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConnectionServiceServer).IsBlocked(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connection.ConnectionService/IsBlocked",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConnectionServiceServer).IsBlocked(ctx, req.(*Block))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ConnectionService_IsBlockedAny_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Block)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConnectionServiceServer).IsBlockedAny(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connection.ConnectionService/IsBlockedAny",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConnectionServiceServer).IsBlockedAny(ctx, req.(*Block))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ConnectionService_ServiceDesc is the grpc.ServiceDesc for ConnectionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -422,6 +550,22 @@ var ConnectionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllPendingConnectionsByUserId",
 			Handler:    _ConnectionService_GetAllPendingConnectionsByUserId_Handler,
+		},
+		{
+			MethodName: "BlockUser",
+			Handler:    _ConnectionService_BlockUser_Handler,
+		},
+		{
+			MethodName: "UnblockUser",
+			Handler:    _ConnectionService_UnblockUser_Handler,
+		},
+		{
+			MethodName: "IsBlocked",
+			Handler:    _ConnectionService_IsBlocked_Handler,
+		},
+		{
+			MethodName: "IsBlockedAny",
+			Handler:    _ConnectionService_IsBlockedAny_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

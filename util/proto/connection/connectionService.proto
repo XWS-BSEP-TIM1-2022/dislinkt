@@ -70,6 +70,32 @@ service ConnectionService {
     };
   }
 
+  rpc BlockUser(BlockUserRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      post: "/block",
+      body: "block"
+    };
+  }
+
+  rpc UnblockUser(BlockUserRequest) returns (EmptyRequest){
+    option(google.api.http) = {
+      put: "/block",
+      body: "block"
+    };
+  }
+
+  rpc IsBlocked(Block) returns (IsBlockedResponse){
+    option(google.api.http) = {
+      get: "/block/{userId}/{blockUserId}"
+    };
+  }
+
+  rpc IsBlockedAny(Block) returns (IsBlockedResponse){
+    option(google.api.http) = {
+      get: "/block/any/{userId}/{blockUserId}"
+    };
+  }
+
 }
 
 message Connection{
@@ -96,4 +122,17 @@ message EmptyRequest{
 
 message AllConnectionResponse{
   repeated Connection connections = 1;
+}
+
+message BlockUserRequest{
+  Block block = 1;
+}
+
+message Block{
+  string userId = 1;
+  string blockUserId = 2;
+}
+
+message IsBlockedResponse{
+  bool blocked = 1;
 }
