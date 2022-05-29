@@ -96,6 +96,26 @@ service ConnectionService {
     };
   }
 
+  rpc Blocked(UserIdRequest) returns (BlockedResponse){
+    option(google.api.http) = {
+      get: "/block/{userId}"
+    };
+  }
+
+  rpc BlockedBy(UserIdRequest) returns (BlockedResponse){
+    option(google.api.http) = {
+      get: "/block/by/{userId}"
+    };
+  }
+
+  // Blocked + BlockedBy
+  rpc BlockedAny(UserIdRequest) returns (BlockedResponse){
+    option(google.api.http) = {
+      get: "/block/any/{userId}"
+    };
+  }
+
+
 }
 
 message Connection{
@@ -135,4 +155,8 @@ message Block{
 
 message IsBlockedResponse{
   bool blocked = 1;
+}
+
+message BlockedResponse{
+  repeated string usersId = 1;
 }
