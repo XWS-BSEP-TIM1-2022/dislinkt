@@ -116,10 +116,12 @@ message Post {
 
 message PostIdRequest {
   string id = 1;
+  string loggedUserId = 2;
 }
 
 message UserPostsRequest {
   string userId = 1;
+  string loggedUserId = 2;
 }
 
 message PostResponse {
@@ -147,10 +149,12 @@ message Comment {
 
 message CommentIdRequest {
   string id = 1;
+  string loggedUserId = 2;
 }
 
 message PostCommentsRequest {
   string postId = 1;
+  string loggedUserId = 2;
 }
 
 message CommentResponse {
@@ -165,6 +169,7 @@ message CommentRequest {
   string id = 1;
   string postId = 2;
   Comment comment = 3;
+  string loggedUserId = 4;
 }
 
 // REACTION
@@ -178,10 +183,12 @@ message Reaction {
 
 message ReactionIdRequest {
   string id = 1;
+  string loggedUserId = 2;
 }
 
 message PostReactionRequest {
   string postId = 1;
+  string loggedUserId = 2;
 }
 
 message ReactionResponse {
@@ -196,4 +203,5 @@ message ReactionRequest {
   string id = 1;
   string postId = 2;
   Reaction reaction = 3;
+  string loggedUserId = 4;
 }
