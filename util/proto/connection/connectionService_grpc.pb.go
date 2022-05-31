@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ConnectionServiceClient interface {
 	NewUserConnection(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
 	ApproveConnection(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
+	GetConnection(ctx context.Context, in *Connection, opts ...grpc.CallOption) (*Connection, error)
 	ApproveAllConnection(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	RejectConnection(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
 	DeleteConnection(ctx context.Context, in *Connection, opts ...grpc.CallOption) (*UserConnectionResponse, error)
@@ -40,6 +41,9 @@ type ConnectionServiceClient interface {
 	BlockedBy(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*BlockedResponse, error)
 	// Blocked + BlockedBy
 	BlockedAny(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*BlockedResponse, error)
+	ChangeMessageNotification(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
+	ChangePostNotification(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
+	ChangeCommentNotification(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
 }
 
 type connectionServiceClient struct {
@@ -62,6 +66,15 @@ func (c *connectionServiceClient) NewUserConnection(ctx context.Context, in *Use
 func (c *connectionServiceClient) ApproveConnection(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error) {
 	out := new(UserConnectionResponse)
 	err := c.cc.Invoke(ctx, "/connection.ConnectionService/ApproveConnection", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *connectionServiceClient) GetConnection(ctx context.Context, in *Connection, opts ...grpc.CallOption) (*Connection, error) {
+	out := new(Connection)
+	err := c.cc.Invoke(ctx, "/connection.ConnectionService/GetConnection", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -203,12 +216,40 @@ func (c *connectionServiceClient) BlockedAny(ctx context.Context, in *UserIdRequ
 	return out, nil
 }
 
+func (c *connectionServiceClient) ChangeMessageNotification(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error) {
+	out := new(UserConnectionResponse)
+	err := c.cc.Invoke(ctx, "/connection.ConnectionService/ChangeMessageNotification", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *connectionServiceClient) ChangePostNotification(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error) {
+	out := new(UserConnectionResponse)
+	err := c.cc.Invoke(ctx, "/connection.ConnectionService/ChangePostNotification", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *connectionServiceClient) ChangeCommentNotification(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error) {
+	out := new(UserConnectionResponse)
+	err := c.cc.Invoke(ctx, "/connection.ConnectionService/ChangeCommentNotification", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ConnectionServiceServer is the server API for ConnectionService service.
 // All implementations must embed UnimplementedConnectionServiceServer
 // for forward compatibility
 type ConnectionServiceServer interface {
 	NewUserConnection(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
 	ApproveConnection(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
+	GetConnection(context.Context, *Connection) (*Connection, error)
 	ApproveAllConnection(context.Context, *UserIdRequest) (*EmptyRequest, error)
 	RejectConnection(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
 	DeleteConnection(context.Context, *Connection) (*UserConnectionResponse, error)
@@ -225,6 +266,9 @@ type ConnectionServiceServer interface {
 	BlockedBy(context.Context, *UserIdRequest) (*BlockedResponse, error)
 	// Blocked + BlockedBy
 	BlockedAny(context.Context, *UserIdRequest) (*BlockedResponse, error)
+	ChangeMessageNotification(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
+	ChangePostNotification(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
+	ChangeCommentNotification(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
 	mustEmbedUnimplementedConnectionServiceServer()
 }
 
@@ -237,6 +281,9 @@ func (UnimplementedConnectionServiceServer) NewUserConnection(context.Context, *
 }
 func (UnimplementedConnectionServiceServer) ApproveConnection(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApproveConnection not implemented")
+}
+func (UnimplementedConnectionServiceServer) GetConnection(context.Context, *Connection) (*Connection, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetConnection not implemented")
 }
 func (UnimplementedConnectionServiceServer) ApproveAllConnection(context.Context, *UserIdRequest) (*EmptyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApproveAllConnection not implemented")
@@ -283,6 +330,15 @@ func (UnimplementedConnectionServiceServer) BlockedBy(context.Context, *UserIdRe
 func (UnimplementedConnectionServiceServer) BlockedAny(context.Context, *UserIdRequest) (*BlockedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BlockedAny not implemented")
 }
+func (UnimplementedConnectionServiceServer) ChangeMessageNotification(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeMessageNotification not implemented")
+}
+func (UnimplementedConnectionServiceServer) ChangePostNotification(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangePostNotification not implemented")
+}
+func (UnimplementedConnectionServiceServer) ChangeCommentNotification(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeCommentNotification not implemented")
+}
 func (UnimplementedConnectionServiceServer) mustEmbedUnimplementedConnectionServiceServer() {}
 
 // UnsafeConnectionServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -328,6 +384,24 @@ func _ConnectionService_ApproveConnection_Handler(srv interface{}, ctx context.C
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ConnectionServiceServer).ApproveConnection(ctx, req.(*UserConnectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ConnectionService_GetConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Connection)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConnectionServiceServer).GetConnection(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connection.ConnectionService/GetConnection",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConnectionServiceServer).GetConnection(ctx, req.(*Connection))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -602,6 +676,60 @@ func _ConnectionService_BlockedAny_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ConnectionService_ChangeMessageNotification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserConnectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConnectionServiceServer).ChangeMessageNotification(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connection.ConnectionService/ChangeMessageNotification",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConnectionServiceServer).ChangeMessageNotification(ctx, req.(*UserConnectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ConnectionService_ChangePostNotification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserConnectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConnectionServiceServer).ChangePostNotification(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connection.ConnectionService/ChangePostNotification",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConnectionServiceServer).ChangePostNotification(ctx, req.(*UserConnectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ConnectionService_ChangeCommentNotification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserConnectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConnectionServiceServer).ChangeCommentNotification(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connection.ConnectionService/ChangeCommentNotification",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConnectionServiceServer).ChangeCommentNotification(ctx, req.(*UserConnectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ConnectionService_ServiceDesc is the grpc.ServiceDesc for ConnectionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -616,6 +744,10 @@ var ConnectionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ApproveConnection",
 			Handler:    _ConnectionService_ApproveConnection_Handler,
+		},
+		{
+			MethodName: "GetConnection",
+			Handler:    _ConnectionService_GetConnection_Handler,
 		},
 		{
 			MethodName: "ApproveAllConnection",
@@ -676,6 +808,18 @@ var ConnectionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BlockedAny",
 			Handler:    _ConnectionService_BlockedAny_Handler,
+		},
+		{
+			MethodName: "ChangeMessageNotification",
+			Handler:    _ConnectionService_ChangeMessageNotification_Handler,
+		},
+		{
+			MethodName: "ChangePostNotification",
+			Handler:    _ConnectionService_ChangePostNotification_Handler,
+		},
+		{
+			MethodName: "ChangeCommentNotification",
+			Handler:    _ConnectionService_ChangeCommentNotification_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

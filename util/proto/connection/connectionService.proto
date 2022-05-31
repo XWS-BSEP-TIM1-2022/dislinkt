@@ -21,6 +21,12 @@ service ConnectionService {
     };
   }
 
+  rpc GetConnection(Connection) returns (Connection){
+    option(google.api.http) = {
+      get: "/connections/{userId}/{connectedUserId}",
+    };
+  }
+
   rpc ApproveAllConnection(UserIdRequest) returns (EmptyRequest){
     option(google.api.http) = {
       put: "/connections/approve/all/{userId}",
@@ -115,6 +121,27 @@ service ConnectionService {
     };
   }
 
+  rpc ChangeMessageNotification(UserConnectionRequest) returns (UserConnectionResponse){
+    option(google.api.http) = {
+      put: "/connections/notification/message",
+      body: "connection"
+    };
+  }
+
+  rpc ChangePostNotification(UserConnectionRequest) returns (UserConnectionResponse){
+    option(google.api.http) = {
+      put: "/connections/notification/post",
+      body: "connection"
+    };
+  }
+
+  rpc ChangeCommentNotification(UserConnectionRequest) returns (UserConnectionResponse){
+    option(google.api.http) = {
+      put: "/connections/notification/comment",
+      body: "connection"
+    };
+  }
+
 
 }
 
@@ -123,6 +150,9 @@ message Connection{
   string connectedUserId = 2;
   bool isConnected = 3;
   bool pendingConnection = 4;
+  bool isMessageNotificationEnabled = 5;
+  bool isPostNotificationEnabled = 6;
+  bool isCommentNotificationEnabled = 7;
 }
 
 message UserConnectionRequest{
