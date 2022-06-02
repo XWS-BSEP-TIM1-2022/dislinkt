@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option go_package = "github.com/XWS-BSEP-TIM1-2022/dislinkt/util/proto/message";
+
+package message;
+
+import "google/api/annotations.proto";
+
+service MessageService {
+
+  rpc GetAllNotifications(UserIdRequest) returns (GetAllResponse){
+    option(google.api.http) = {
+      get: "/notifications/{userId}"
+    };
+  }
+
+  rpc CreateNotification(NewNotificationRequest) returns (GetResponse){
+    option(google.api.http) = {
+      post: "/notifications"
+    };
+  }
+}
+
+message EmptyRequest{}
+
+message UserIdRequest{
+  string userId = 1;
+}
+
+message GetAllResponse{
+  repeated Notification notifications = 1;
+}
+
+message GetResponse{
+  Notification notification = 1;
+}
+
+message Notification{
+  string id = 1;
+  string userId = 2;
+  string fromUserId = 3;
+  string message = 4;
+  string date = 5;
+}
+
+message NewNotificationRequest{
+  Notification notification = 1;
+  int32 notificationType = 2; //1 = message, 2 = post, 3 = comment
+}
