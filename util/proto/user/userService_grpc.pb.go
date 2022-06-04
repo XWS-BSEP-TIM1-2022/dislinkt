@@ -38,6 +38,7 @@ type UserServiceClient interface {
 	Verify2FA(ctx context.Context, in *TFARequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Disable2FA(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
 	UpdatePasswordRequest(ctx context.Context, in *NewPasswordRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	ChangeUsernameRequest(ctx context.Context, in *NewUsernameRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	GetAllUsersExperienceRequest(ctx context.Context, in *ExperienceRequest, opts ...grpc.CallOption) (*ExperienceResponse, error)
 	PostExperienceRequest(ctx context.Context, in *NewExperienceRequest, opts ...grpc.CallOption) (*NewExperienceResponse, error)
 	DeleteExperienceRequest(ctx context.Context, in *DeleteUsersExperienceRequest, opts ...grpc.CallOption) (*EmptyRequest, error)
@@ -208,6 +209,15 @@ func (c *userServiceClient) UpdatePasswordRequest(ctx context.Context, in *NewPa
 	return out, nil
 }
 
+func (c *userServiceClient) ChangeUsernameRequest(ctx context.Context, in *NewUsernameRequest, opts ...grpc.CallOption) (*GetResponse, error) {
+	out := new(GetResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/ChangeUsernameRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userServiceClient) GetAllUsersExperienceRequest(ctx context.Context, in *ExperienceRequest, opts ...grpc.CallOption) (*ExperienceResponse, error) {
 	out := new(ExperienceResponse)
 	err := c.cc.Invoke(ctx, "/user.UserService/GetAllUsersExperienceRequest", in, out, opts...)
@@ -372,6 +382,7 @@ type UserServiceServer interface {
 	Verify2FA(context.Context, *TFARequest) (*LoginResponse, error)
 	Disable2FA(context.Context, *UserIdRequest) (*EmptyRequest, error)
 	UpdatePasswordRequest(context.Context, *NewPasswordRequest) (*GetResponse, error)
+	ChangeUsernameRequest(context.Context, *NewUsernameRequest) (*GetResponse, error)
 	GetAllUsersExperienceRequest(context.Context, *ExperienceRequest) (*ExperienceResponse, error)
 	PostExperienceRequest(context.Context, *NewExperienceRequest) (*NewExperienceResponse, error)
 	DeleteExperienceRequest(context.Context, *DeleteUsersExperienceRequest) (*EmptyRequest, error)
@@ -442,6 +453,9 @@ func (UnimplementedUserServiceServer) Disable2FA(context.Context, *UserIdRequest
 }
 func (UnimplementedUserServiceServer) UpdatePasswordRequest(context.Context, *NewPasswordRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePasswordRequest not implemented")
+}
+func (UnimplementedUserServiceServer) ChangeUsernameRequest(context.Context, *NewUsernameRequest) (*GetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeUsernameRequest not implemented")
 }
 func (UnimplementedUserServiceServer) GetAllUsersExperienceRequest(context.Context, *ExperienceRequest) (*ExperienceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsersExperienceRequest not implemented")
@@ -788,6 +802,24 @@ func _UserService_UpdatePasswordRequest_Handler(srv interface{}, ctx context.Con
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).UpdatePasswordRequest(ctx, req.(*NewPasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_ChangeUsernameRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NewUsernameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ChangeUsernameRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/ChangeUsernameRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ChangeUsernameRequest(ctx, req.(*NewUsernameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1150,6 +1182,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdatePasswordRequest",
 			Handler:    _UserService_UpdatePasswordRequest_Handler,
+		},
+		{
+			MethodName: "ChangeUsernameRequest",
+			Handler:    _UserService_ChangeUsernameRequest_Handler,
 		},
 		{
 			MethodName: "GetAllUsersExperienceRequest",

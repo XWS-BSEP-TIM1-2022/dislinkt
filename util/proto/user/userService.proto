@@ -110,6 +110,13 @@ service UserService {
     };
   }
 
+  rpc ChangeUsernameRequest (NewUsernameRequest) returns (GetResponse){
+    option (google.api.http) = {
+      put: "/users/change-username"
+      body: "newUsername"
+    };
+  }
+
   rpc GetAllUsersExperienceRequest (ExperienceRequest) returns (ExperienceResponse){
     option(google.api.http) = {
       get: "/users/experience/{userId}"
@@ -395,4 +402,13 @@ message PasswordRecovery{
 message PasswordlessLoginRequest{
   string userId = 1;
   string loginId = 2;
+}
+
+message NewUsernameRequest{
+  NewUsername newUsername = 1;
+}
+
+message NewUsername{
+  string userId = 1;
+  string username = 2;
 }
