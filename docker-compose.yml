@@ -34,6 +34,10 @@ services:
           - POST_SERVICE_PORT=8000
           - CONNECTION_SERVICE_HOST=connection_service
           - CONNECTION_SERVICE_PORT=8000
+          - JOB_SERVICE_HOST=job_service
+          - JOB_SERVICE_PORT=8000
+          - MESSAGE_SERVICE_HOST=message_service
+          - MESSAGE_SERVICE_PORT=8000
           - CERTIFICATE_PATH=./certificates/dislinkt.cer
           - CERTIFICATE_KEY_PATH=./certificates/dislinkt_private_key.key
     
@@ -54,6 +58,8 @@ services:
           - USER_SERVICE_PORT=8000
           - USER_DB_HOST=dislinkt:WiYf6BvFmSpJS2Ob@xws.cjx50.mongodb.net/usersDB
           - USER_SERVICE_NAME=user_service
+          - CONNECTION_SERVICE_HOST=connection_service
+          - CONNECTION_SERVICE_PORT=8000
     
     post_service:
         image: post_service
@@ -72,6 +78,8 @@ services:
           - POST_SERVICE_PORT=8000
           - POST_DB_HOST=dislinkt:WiYf6BvFmSpJS2Ob@xws.cjx50.mongodb.net/postsDB
           - POST_SERVICE_NAME=post_service
+          - MESSAGE_SERVICE_HOST=message_service
+          - MESSAGE_SERVICE_PORT=8000
           
     connection_service:
         image: connection_service
@@ -94,6 +102,61 @@ services:
           - CONNECTION_SERVICE_NAME=connection_service
           - USER_SERVICE_HOST=user_service
           - USER_SERVICE_PORT=8000
+          
+    job_service:
+        image: job_service
+        container_name: job_service
+        build:
+          context: .
+          dockerfile: ./job-microservice/Dockerfile
+        restart: always
+        environment:
+          - JAEGER_SERVICE_NAME=job_service
+          - JAEGER_AGENT_HOST=tracing
+          - JAEGER_AGENT_PORT=6831
+          - JAEGER_SAMPLER_MANAGER_HOST_PORT=jaeger:5778
+          - JAEGER_SAMPLER_TYPE=const
+          - JAEGER_SAMPLER_PARAM=1
+          - JOB_SERVICE_PORT=8000
+          - JOB_DB_HOST=dislinkt:WiYf6BvFmSpJS2Ob@xws.cjx50.mongodb.net/jobsDB
+          - JOB_SERVICE_NAME=job_service
+          
+    message_service:
+        image: message_service
+        container_name: message_service
+        build:
+          context: .
+          dockerfile: ./message-microservice/Dockerfile
+        restart: always
+        environment:
+          - JAEGER_SERVICE_NAME=message_service
+          - JAEGER_AGENT_HOST=tracing
+          - JAEGER_AGENT_PORT=6831
+          - JAEGER_SAMPLER_MANAGER_HOST_PORT=jaeger:5778
+          - JAEGER_SAMPLER_TYPE=const
+          - JAEGER_SAMPLER_PARAM=1
+          - MESSAGE_SERVICE_PORT=8000
+          - MESSAGE_DB_HOST=dislinkt:WiYf6BvFmSpJS2Ob@xws.cjx50.mongodb.net/jobsDB
+          - MESSAGE_SERVICE_NAME=message_service
+          - CONNECTION_SERVICE_HOST=connection_service
+          - CONNECTION_SERVICE_PORT=8000
+        
+    agent_app_back:
+        image: agent_app_back
+        container_name: agent_app_back
+        build:
+          context: .
+          dockerfile: ./agent-app-back/Dockerfile
+        ports:
+          - 80:80
+        restart: always
+        environment:
+          - JAEGER_SERVICE_NAME=post_service
+          - JAEGER_AGENT_HOST=tracing
+          - JAEGER_AGENT_PORT=6831
+          - JAEGER_SAMPLER_MANAGER_HOST_PORT=jaeger:5778
+          - JAEGER_SAMPLER_TYPE=const
+          - JAEGER_SAMPLER_PARAM=1
         
     # dislinkt-frontend:
         # image: dislinkt-frontend
