@@ -95,6 +95,23 @@ services:
           - USER_SERVICE_HOST=user_service
           - USER_SERVICE_PORT=8000
         
+    agent_app_back:
+        image: agent_app_back
+        container_name: agent_app_back
+        build:
+          context: .
+          dockerfile: ./agent-app-back/Dockerfile
+        ports:
+          - 80:80
+        restart: always
+        environment:
+          - JAEGER_SERVICE_NAME=post_service
+          - JAEGER_AGENT_HOST=tracing
+          - JAEGER_AGENT_PORT=6831
+          - JAEGER_SAMPLER_MANAGER_HOST_PORT=jaeger:5778
+          - JAEGER_SAMPLER_TYPE=const
+          - JAEGER_SAMPLER_PARAM=1
+        
     # dislinkt-frontend:
         # image: dislinkt-frontend
         # container_name: dislinkt-frontend
