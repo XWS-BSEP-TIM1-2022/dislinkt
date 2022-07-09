@@ -21,6 +21,53 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type SuggestionsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	SuggestionUserIds []*UserIdRequest `protobuf:"bytes,1,rep,name=suggestionUserIds,proto3" json:"suggestionUserIds,omitempty"`
+}
+
+func (x *SuggestionsResponse) Reset() {
+	*x = SuggestionsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_connection_connectionService_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SuggestionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SuggestionsResponse) ProtoMessage() {}
+
+func (x *SuggestionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_connection_connectionService_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SuggestionsResponse.ProtoReflect.Descriptor instead.
+func (*SuggestionsResponse) Descriptor() ([]byte, []int) {
+	return file_connection_connectionService_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *SuggestionsResponse) GetSuggestionUserIds() []*UserIdRequest {
+	if x != nil {
+		return x.SuggestionUserIds
+	}
+	return nil
+}
+
 type Connection struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -38,7 +85,7 @@ type Connection struct {
 func (x *Connection) Reset() {
 	*x = Connection{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_connection_connectionService_proto_msgTypes[0]
+		mi := &file_connection_connectionService_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -51,7 +98,7 @@ func (x *Connection) String() string {
 func (*Connection) ProtoMessage() {}
 
 func (x *Connection) ProtoReflect() protoreflect.Message {
-	mi := &file_connection_connectionService_proto_msgTypes[0]
+	mi := &file_connection_connectionService_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -64,7 +111,7 @@ func (x *Connection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Connection.ProtoReflect.Descriptor instead.
 func (*Connection) Descriptor() ([]byte, []int) {
-	return file_connection_connectionService_proto_rawDescGZIP(), []int{0}
+	return file_connection_connectionService_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Connection) GetUserId() string {
@@ -127,7 +174,7 @@ type UserConnectionRequest struct {
 func (x *UserConnectionRequest) Reset() {
 	*x = UserConnectionRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_connection_connectionService_proto_msgTypes[1]
+		mi := &file_connection_connectionService_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -140,7 +187,7 @@ func (x *UserConnectionRequest) String() string {
 func (*UserConnectionRequest) ProtoMessage() {}
 
 func (x *UserConnectionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_connection_connectionService_proto_msgTypes[1]
+	mi := &file_connection_connectionService_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -153,7 +200,7 @@ func (x *UserConnectionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserConnectionRequest.ProtoReflect.Descriptor instead.
 func (*UserConnectionRequest) Descriptor() ([]byte, []int) {
-	return file_connection_connectionService_proto_rawDescGZIP(), []int{1}
+	return file_connection_connectionService_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UserConnectionRequest) GetConnection() *Connection {
@@ -174,7 +221,7 @@ type UserConnectionResponse struct {
 func (x *UserConnectionResponse) Reset() {
 	*x = UserConnectionResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_connection_connectionService_proto_msgTypes[2]
+		mi := &file_connection_connectionService_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -187,7 +234,7 @@ func (x *UserConnectionResponse) String() string {
 func (*UserConnectionResponse) ProtoMessage() {}
 
 func (x *UserConnectionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_connection_connectionService_proto_msgTypes[2]
+	mi := &file_connection_connectionService_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -200,7 +247,7 @@ func (x *UserConnectionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserConnectionResponse.ProtoReflect.Descriptor instead.
 func (*UserConnectionResponse) Descriptor() ([]byte, []int) {
-	return file_connection_connectionService_proto_rawDescGZIP(), []int{2}
+	return file_connection_connectionService_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UserConnectionResponse) GetConnection() *Connection {
@@ -221,7 +268,7 @@ type UserIdRequest struct {
 func (x *UserIdRequest) Reset() {
 	*x = UserIdRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_connection_connectionService_proto_msgTypes[3]
+		mi := &file_connection_connectionService_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -234,7 +281,7 @@ func (x *UserIdRequest) String() string {
 func (*UserIdRequest) ProtoMessage() {}
 
 func (x *UserIdRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_connection_connectionService_proto_msgTypes[3]
+	mi := &file_connection_connectionService_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -247,7 +294,7 @@ func (x *UserIdRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserIdRequest.ProtoReflect.Descriptor instead.
 func (*UserIdRequest) Descriptor() ([]byte, []int) {
-	return file_connection_connectionService_proto_rawDescGZIP(), []int{3}
+	return file_connection_connectionService_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UserIdRequest) GetUserId() string {
@@ -266,7 +313,7 @@ type EmptyRequest struct {
 func (x *EmptyRequest) Reset() {
 	*x = EmptyRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_connection_connectionService_proto_msgTypes[4]
+		mi := &file_connection_connectionService_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -279,7 +326,7 @@ func (x *EmptyRequest) String() string {
 func (*EmptyRequest) ProtoMessage() {}
 
 func (x *EmptyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_connection_connectionService_proto_msgTypes[4]
+	mi := &file_connection_connectionService_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -292,7 +339,7 @@ func (x *EmptyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmptyRequest.ProtoReflect.Descriptor instead.
 func (*EmptyRequest) Descriptor() ([]byte, []int) {
-	return file_connection_connectionService_proto_rawDescGZIP(), []int{4}
+	return file_connection_connectionService_proto_rawDescGZIP(), []int{5}
 }
 
 type AllConnectionResponse struct {
@@ -306,7 +353,7 @@ type AllConnectionResponse struct {
 func (x *AllConnectionResponse) Reset() {
 	*x = AllConnectionResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_connection_connectionService_proto_msgTypes[5]
+		mi := &file_connection_connectionService_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -319,7 +366,7 @@ func (x *AllConnectionResponse) String() string {
 func (*AllConnectionResponse) ProtoMessage() {}
 
 func (x *AllConnectionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_connection_connectionService_proto_msgTypes[5]
+	mi := &file_connection_connectionService_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -332,7 +379,7 @@ func (x *AllConnectionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AllConnectionResponse.ProtoReflect.Descriptor instead.
 func (*AllConnectionResponse) Descriptor() ([]byte, []int) {
-	return file_connection_connectionService_proto_rawDescGZIP(), []int{5}
+	return file_connection_connectionService_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *AllConnectionResponse) GetConnections() []*Connection {
@@ -353,7 +400,7 @@ type BlockUserRequest struct {
 func (x *BlockUserRequest) Reset() {
 	*x = BlockUserRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_connection_connectionService_proto_msgTypes[6]
+		mi := &file_connection_connectionService_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -366,7 +413,7 @@ func (x *BlockUserRequest) String() string {
 func (*BlockUserRequest) ProtoMessage() {}
 
 func (x *BlockUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_connection_connectionService_proto_msgTypes[6]
+	mi := &file_connection_connectionService_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -379,7 +426,7 @@ func (x *BlockUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BlockUserRequest.ProtoReflect.Descriptor instead.
 func (*BlockUserRequest) Descriptor() ([]byte, []int) {
-	return file_connection_connectionService_proto_rawDescGZIP(), []int{6}
+	return file_connection_connectionService_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *BlockUserRequest) GetBlock() *Block {
@@ -401,7 +448,7 @@ type Block struct {
 func (x *Block) Reset() {
 	*x = Block{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_connection_connectionService_proto_msgTypes[7]
+		mi := &file_connection_connectionService_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -414,7 +461,7 @@ func (x *Block) String() string {
 func (*Block) ProtoMessage() {}
 
 func (x *Block) ProtoReflect() protoreflect.Message {
-	mi := &file_connection_connectionService_proto_msgTypes[7]
+	mi := &file_connection_connectionService_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -427,7 +474,7 @@ func (x *Block) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Block.ProtoReflect.Descriptor instead.
 func (*Block) Descriptor() ([]byte, []int) {
-	return file_connection_connectionService_proto_rawDescGZIP(), []int{7}
+	return file_connection_connectionService_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Block) GetUserId() string {
@@ -455,7 +502,7 @@ type IsBlockedResponse struct {
 func (x *IsBlockedResponse) Reset() {
 	*x = IsBlockedResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_connection_connectionService_proto_msgTypes[8]
+		mi := &file_connection_connectionService_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -468,7 +515,7 @@ func (x *IsBlockedResponse) String() string {
 func (*IsBlockedResponse) ProtoMessage() {}
 
 func (x *IsBlockedResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_connection_connectionService_proto_msgTypes[8]
+	mi := &file_connection_connectionService_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -481,7 +528,7 @@ func (x *IsBlockedResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IsBlockedResponse.ProtoReflect.Descriptor instead.
 func (*IsBlockedResponse) Descriptor() ([]byte, []int) {
-	return file_connection_connectionService_proto_rawDescGZIP(), []int{8}
+	return file_connection_connectionService_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *IsBlockedResponse) GetBlocked() bool {
@@ -502,7 +549,7 @@ type BlockedResponse struct {
 func (x *BlockedResponse) Reset() {
 	*x = BlockedResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_connection_connectionService_proto_msgTypes[9]
+		mi := &file_connection_connectionService_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -515,7 +562,7 @@ func (x *BlockedResponse) String() string {
 func (*BlockedResponse) ProtoMessage() {}
 
 func (x *BlockedResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_connection_connectionService_proto_msgTypes[9]
+	mi := &file_connection_connectionService_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -528,7 +575,7 @@ func (x *BlockedResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BlockedResponse.ProtoReflect.Descriptor instead.
 func (*BlockedResponse) Descriptor() ([]byte, []int) {
-	return file_connection_connectionService_proto_rawDescGZIP(), []int{9}
+	return file_connection_connectionService_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *BlockedResponse) GetUsersId() []string {
@@ -545,7 +592,13 @@ var file_connection_connectionService_proto_rawDesc = []byte{
 	0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0a, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e,
 	0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e,
-	0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xe4,
+	0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x5e,
+	0x0a, 0x13, 0x53, 0x75, 0x67, 0x67, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x47, 0x0a, 0x11, 0x73, 0x75, 0x67, 0x67, 0x65, 0x73, 0x74,
+	0x69, 0x6f, 0x6e, 0x55, 0x73, 0x65, 0x72, 0x49, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x19, 0x2e, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x55, 0x73,
+	0x65, 0x72, 0x49, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x11, 0x73, 0x75, 0x67,
+	0x67, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x55, 0x73, 0x65, 0x72, 0x49, 0x64, 0x73, 0x22, 0xe4,
 	0x02, 0x0a, 0x0a, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x16, 0x0a,
 	0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x75,
 	0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x28, 0x0a, 0x0f, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74,
@@ -601,7 +654,7 @@ var file_connection_connectionService_proto_rawDesc = []byte{
 	0x6b, 0x65, 0x64, 0x22, 0x2b, 0x0a, 0x0f, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52, 0x65,
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x73, 0x49,
 	0x64, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x07, 0x75, 0x73, 0x65, 0x72, 0x73, 0x49, 0x64,
-	0x32, 0xe3, 0x13, 0x0a, 0x11, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53,
+	0x32, 0xe8, 0x14, 0x0a, 0x11, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53,
 	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x7c, 0x0a, 0x11, 0x4e, 0x65, 0x77, 0x55, 0x73, 0x65,
 	0x72, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x21, 0x2e, 0x63, 0x6f,
 	0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x43, 0x6f, 0x6e,
@@ -759,11 +812,20 @@ var file_connection_connectionService_proto_rawDesc = []byte{
 	0x35, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2f, 0x1a, 0x21, 0x2f, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63,
 	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2f, 0x6e, 0x6f, 0x74, 0x69, 0x66, 0x69, 0x63, 0x61, 0x74, 0x69,
 	0x6f, 0x6e, 0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x3a, 0x0a, 0x63, 0x6f, 0x6e, 0x6e,
-	0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x3e, 0x5a, 0x3c, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
-	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x58, 0x57, 0x53, 0x2d, 0x42, 0x53, 0x45, 0x50, 0x2d, 0x54, 0x49,
-	0x4d, 0x31, 0x2d, 0x32, 0x30, 0x32, 0x32, 0x2f, 0x64, 0x69, 0x73, 0x6c, 0x69, 0x6e, 0x6b, 0x74,
-	0x2f, 0x75, 0x74, 0x69, 0x6c, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x6e, 0x6e,
-	0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x82, 0x01, 0x0a, 0x19, 0x47, 0x65, 0x74, 0x41, 0x6c,
+	0x6c, 0x53, 0x75, 0x67, 0x67, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x42, 0x79, 0x55, 0x73,
+	0x65, 0x72, 0x49, 0x64, 0x12, 0x19, 0x2e, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x49, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x1f, 0x2e, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x53, 0x75, 0x67,
+	0x67, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x29, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x23, 0x12, 0x21, 0x2f, 0x63, 0x6f, 0x6e, 0x6e, 0x65,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2f, 0x73, 0x75, 0x67, 0x67, 0x65, 0x73, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x2f, 0x7b, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x7d, 0x42, 0x3e, 0x5a, 0x3c, 0x67,
+	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x58, 0x57, 0x53, 0x2d, 0x42, 0x53,
+	0x45, 0x50, 0x2d, 0x54, 0x49, 0x4d, 0x31, 0x2d, 0x32, 0x30, 0x32, 0x32, 0x2f, 0x64, 0x69, 0x73,
+	0x6c, 0x69, 0x6e, 0x6b, 0x74, 0x2f, 0x75, 0x74, 0x69, 0x6c, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x2f, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -778,71 +840,75 @@ func file_connection_connectionService_proto_rawDescGZIP() []byte {
 	return file_connection_connectionService_proto_rawDescData
 }
 
-var file_connection_connectionService_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_connection_connectionService_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_connection_connectionService_proto_goTypes = []interface{}{
-	(*Connection)(nil),             // 0: connection.Connection
-	(*UserConnectionRequest)(nil),  // 1: connection.UserConnectionRequest
-	(*UserConnectionResponse)(nil), // 2: connection.UserConnectionResponse
-	(*UserIdRequest)(nil),          // 3: connection.UserIdRequest
-	(*EmptyRequest)(nil),           // 4: connection.EmptyRequest
-	(*AllConnectionResponse)(nil),  // 5: connection.AllConnectionResponse
-	(*BlockUserRequest)(nil),       // 6: connection.BlockUserRequest
-	(*Block)(nil),                  // 7: connection.Block
-	(*IsBlockedResponse)(nil),      // 8: connection.IsBlockedResponse
-	(*BlockedResponse)(nil),        // 9: connection.BlockedResponse
+	(*SuggestionsResponse)(nil),    // 0: connection.SuggestionsResponse
+	(*Connection)(nil),             // 1: connection.Connection
+	(*UserConnectionRequest)(nil),  // 2: connection.UserConnectionRequest
+	(*UserConnectionResponse)(nil), // 3: connection.UserConnectionResponse
+	(*UserIdRequest)(nil),          // 4: connection.UserIdRequest
+	(*EmptyRequest)(nil),           // 5: connection.EmptyRequest
+	(*AllConnectionResponse)(nil),  // 6: connection.AllConnectionResponse
+	(*BlockUserRequest)(nil),       // 7: connection.BlockUserRequest
+	(*Block)(nil),                  // 8: connection.Block
+	(*IsBlockedResponse)(nil),      // 9: connection.IsBlockedResponse
+	(*BlockedResponse)(nil),        // 10: connection.BlockedResponse
 }
 var file_connection_connectionService_proto_depIdxs = []int32{
-	0,  // 0: connection.UserConnectionRequest.connection:type_name -> connection.Connection
-	0,  // 1: connection.UserConnectionResponse.connection:type_name -> connection.Connection
-	0,  // 2: connection.AllConnectionResponse.connections:type_name -> connection.Connection
-	7,  // 3: connection.BlockUserRequest.block:type_name -> connection.Block
-	1,  // 4: connection.ConnectionService.NewUserConnection:input_type -> connection.UserConnectionRequest
-	1,  // 5: connection.ConnectionService.ApproveConnection:input_type -> connection.UserConnectionRequest
-	0,  // 6: connection.ConnectionService.GetConnection:input_type -> connection.Connection
-	3,  // 7: connection.ConnectionService.ApproveAllConnection:input_type -> connection.UserIdRequest
-	1,  // 8: connection.ConnectionService.RejectConnection:input_type -> connection.UserConnectionRequest
-	0,  // 9: connection.ConnectionService.DeleteConnection:input_type -> connection.Connection
-	3,  // 10: connection.ConnectionService.GetAllConnections:input_type -> connection.UserIdRequest
-	3,  // 11: connection.ConnectionService.GetFollowings:input_type -> connection.UserIdRequest
-	3,  // 12: connection.ConnectionService.GetFollowers:input_type -> connection.UserIdRequest
-	3,  // 13: connection.ConnectionService.GetAllRequestConnectionsByUserId:input_type -> connection.UserIdRequest
-	3,  // 14: connection.ConnectionService.GetAllPendingConnectionsByUserId:input_type -> connection.UserIdRequest
-	6,  // 15: connection.ConnectionService.BlockUser:input_type -> connection.BlockUserRequest
-	6,  // 16: connection.ConnectionService.UnblockUser:input_type -> connection.BlockUserRequest
-	7,  // 17: connection.ConnectionService.IsBlocked:input_type -> connection.Block
-	7,  // 18: connection.ConnectionService.IsBlockedAny:input_type -> connection.Block
-	3,  // 19: connection.ConnectionService.Blocked:input_type -> connection.UserIdRequest
-	3,  // 20: connection.ConnectionService.BlockedBy:input_type -> connection.UserIdRequest
-	3,  // 21: connection.ConnectionService.BlockedAny:input_type -> connection.UserIdRequest
-	1,  // 22: connection.ConnectionService.ChangeMessageNotification:input_type -> connection.UserConnectionRequest
-	1,  // 23: connection.ConnectionService.ChangePostNotification:input_type -> connection.UserConnectionRequest
-	1,  // 24: connection.ConnectionService.ChangeCommentNotification:input_type -> connection.UserConnectionRequest
-	2,  // 25: connection.ConnectionService.NewUserConnection:output_type -> connection.UserConnectionResponse
-	2,  // 26: connection.ConnectionService.ApproveConnection:output_type -> connection.UserConnectionResponse
-	0,  // 27: connection.ConnectionService.GetConnection:output_type -> connection.Connection
-	4,  // 28: connection.ConnectionService.ApproveAllConnection:output_type -> connection.EmptyRequest
-	2,  // 29: connection.ConnectionService.RejectConnection:output_type -> connection.UserConnectionResponse
-	2,  // 30: connection.ConnectionService.DeleteConnection:output_type -> connection.UserConnectionResponse
-	5,  // 31: connection.ConnectionService.GetAllConnections:output_type -> connection.AllConnectionResponse
-	5,  // 32: connection.ConnectionService.GetFollowings:output_type -> connection.AllConnectionResponse
-	5,  // 33: connection.ConnectionService.GetFollowers:output_type -> connection.AllConnectionResponse
-	5,  // 34: connection.ConnectionService.GetAllRequestConnectionsByUserId:output_type -> connection.AllConnectionResponse
-	5,  // 35: connection.ConnectionService.GetAllPendingConnectionsByUserId:output_type -> connection.AllConnectionResponse
-	4,  // 36: connection.ConnectionService.BlockUser:output_type -> connection.EmptyRequest
-	4,  // 37: connection.ConnectionService.UnblockUser:output_type -> connection.EmptyRequest
-	8,  // 38: connection.ConnectionService.IsBlocked:output_type -> connection.IsBlockedResponse
-	8,  // 39: connection.ConnectionService.IsBlockedAny:output_type -> connection.IsBlockedResponse
-	9,  // 40: connection.ConnectionService.Blocked:output_type -> connection.BlockedResponse
-	9,  // 41: connection.ConnectionService.BlockedBy:output_type -> connection.BlockedResponse
-	9,  // 42: connection.ConnectionService.BlockedAny:output_type -> connection.BlockedResponse
-	2,  // 43: connection.ConnectionService.ChangeMessageNotification:output_type -> connection.UserConnectionResponse
-	2,  // 44: connection.ConnectionService.ChangePostNotification:output_type -> connection.UserConnectionResponse
-	2,  // 45: connection.ConnectionService.ChangeCommentNotification:output_type -> connection.UserConnectionResponse
-	25, // [25:46] is the sub-list for method output_type
-	4,  // [4:25] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	4,  // 0: connection.SuggestionsResponse.suggestionUserIds:type_name -> connection.UserIdRequest
+	1,  // 1: connection.UserConnectionRequest.connection:type_name -> connection.Connection
+	1,  // 2: connection.UserConnectionResponse.connection:type_name -> connection.Connection
+	1,  // 3: connection.AllConnectionResponse.connections:type_name -> connection.Connection
+	8,  // 4: connection.BlockUserRequest.block:type_name -> connection.Block
+	2,  // 5: connection.ConnectionService.NewUserConnection:input_type -> connection.UserConnectionRequest
+	2,  // 6: connection.ConnectionService.ApproveConnection:input_type -> connection.UserConnectionRequest
+	1,  // 7: connection.ConnectionService.GetConnection:input_type -> connection.Connection
+	4,  // 8: connection.ConnectionService.ApproveAllConnection:input_type -> connection.UserIdRequest
+	2,  // 9: connection.ConnectionService.RejectConnection:input_type -> connection.UserConnectionRequest
+	1,  // 10: connection.ConnectionService.DeleteConnection:input_type -> connection.Connection
+	4,  // 11: connection.ConnectionService.GetAllConnections:input_type -> connection.UserIdRequest
+	4,  // 12: connection.ConnectionService.GetFollowings:input_type -> connection.UserIdRequest
+	4,  // 13: connection.ConnectionService.GetFollowers:input_type -> connection.UserIdRequest
+	4,  // 14: connection.ConnectionService.GetAllRequestConnectionsByUserId:input_type -> connection.UserIdRequest
+	4,  // 15: connection.ConnectionService.GetAllPendingConnectionsByUserId:input_type -> connection.UserIdRequest
+	7,  // 16: connection.ConnectionService.BlockUser:input_type -> connection.BlockUserRequest
+	7,  // 17: connection.ConnectionService.UnblockUser:input_type -> connection.BlockUserRequest
+	8,  // 18: connection.ConnectionService.IsBlocked:input_type -> connection.Block
+	8,  // 19: connection.ConnectionService.IsBlockedAny:input_type -> connection.Block
+	4,  // 20: connection.ConnectionService.Blocked:input_type -> connection.UserIdRequest
+	4,  // 21: connection.ConnectionService.BlockedBy:input_type -> connection.UserIdRequest
+	4,  // 22: connection.ConnectionService.BlockedAny:input_type -> connection.UserIdRequest
+	2,  // 23: connection.ConnectionService.ChangeMessageNotification:input_type -> connection.UserConnectionRequest
+	2,  // 24: connection.ConnectionService.ChangePostNotification:input_type -> connection.UserConnectionRequest
+	2,  // 25: connection.ConnectionService.ChangeCommentNotification:input_type -> connection.UserConnectionRequest
+	4,  // 26: connection.ConnectionService.GetAllSuggestionsByUserId:input_type -> connection.UserIdRequest
+	3,  // 27: connection.ConnectionService.NewUserConnection:output_type -> connection.UserConnectionResponse
+	3,  // 28: connection.ConnectionService.ApproveConnection:output_type -> connection.UserConnectionResponse
+	1,  // 29: connection.ConnectionService.GetConnection:output_type -> connection.Connection
+	5,  // 30: connection.ConnectionService.ApproveAllConnection:output_type -> connection.EmptyRequest
+	3,  // 31: connection.ConnectionService.RejectConnection:output_type -> connection.UserConnectionResponse
+	3,  // 32: connection.ConnectionService.DeleteConnection:output_type -> connection.UserConnectionResponse
+	6,  // 33: connection.ConnectionService.GetAllConnections:output_type -> connection.AllConnectionResponse
+	6,  // 34: connection.ConnectionService.GetFollowings:output_type -> connection.AllConnectionResponse
+	6,  // 35: connection.ConnectionService.GetFollowers:output_type -> connection.AllConnectionResponse
+	6,  // 36: connection.ConnectionService.GetAllRequestConnectionsByUserId:output_type -> connection.AllConnectionResponse
+	6,  // 37: connection.ConnectionService.GetAllPendingConnectionsByUserId:output_type -> connection.AllConnectionResponse
+	5,  // 38: connection.ConnectionService.BlockUser:output_type -> connection.EmptyRequest
+	5,  // 39: connection.ConnectionService.UnblockUser:output_type -> connection.EmptyRequest
+	9,  // 40: connection.ConnectionService.IsBlocked:output_type -> connection.IsBlockedResponse
+	9,  // 41: connection.ConnectionService.IsBlockedAny:output_type -> connection.IsBlockedResponse
+	10, // 42: connection.ConnectionService.Blocked:output_type -> connection.BlockedResponse
+	10, // 43: connection.ConnectionService.BlockedBy:output_type -> connection.BlockedResponse
+	10, // 44: connection.ConnectionService.BlockedAny:output_type -> connection.BlockedResponse
+	3,  // 45: connection.ConnectionService.ChangeMessageNotification:output_type -> connection.UserConnectionResponse
+	3,  // 46: connection.ConnectionService.ChangePostNotification:output_type -> connection.UserConnectionResponse
+	3,  // 47: connection.ConnectionService.ChangeCommentNotification:output_type -> connection.UserConnectionResponse
+	0,  // 48: connection.ConnectionService.GetAllSuggestionsByUserId:output_type -> connection.SuggestionsResponse
+	27, // [27:49] is the sub-list for method output_type
+	5,  // [5:27] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_connection_connectionService_proto_init() }
@@ -852,7 +918,7 @@ func file_connection_connectionService_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_connection_connectionService_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Connection); i {
+			switch v := v.(*SuggestionsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -864,7 +930,7 @@ func file_connection_connectionService_proto_init() {
 			}
 		}
 		file_connection_connectionService_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserConnectionRequest); i {
+			switch v := v.(*Connection); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -876,7 +942,7 @@ func file_connection_connectionService_proto_init() {
 			}
 		}
 		file_connection_connectionService_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserConnectionResponse); i {
+			switch v := v.(*UserConnectionRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -888,7 +954,7 @@ func file_connection_connectionService_proto_init() {
 			}
 		}
 		file_connection_connectionService_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserIdRequest); i {
+			switch v := v.(*UserConnectionResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -900,7 +966,7 @@ func file_connection_connectionService_proto_init() {
 			}
 		}
 		file_connection_connectionService_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*EmptyRequest); i {
+			switch v := v.(*UserIdRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -912,7 +978,7 @@ func file_connection_connectionService_proto_init() {
 			}
 		}
 		file_connection_connectionService_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AllConnectionResponse); i {
+			switch v := v.(*EmptyRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -924,7 +990,7 @@ func file_connection_connectionService_proto_init() {
 			}
 		}
 		file_connection_connectionService_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BlockUserRequest); i {
+			switch v := v.(*AllConnectionResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -936,7 +1002,7 @@ func file_connection_connectionService_proto_init() {
 			}
 		}
 		file_connection_connectionService_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Block); i {
+			switch v := v.(*BlockUserRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -948,7 +1014,7 @@ func file_connection_connectionService_proto_init() {
 			}
 		}
 		file_connection_connectionService_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*IsBlockedResponse); i {
+			switch v := v.(*Block); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -960,6 +1026,18 @@ func file_connection_connectionService_proto_init() {
 			}
 		}
 		file_connection_connectionService_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*IsBlockedResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_connection_connectionService_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*BlockedResponse); i {
 			case 0:
 				return &v.state
@@ -978,7 +1056,7 @@ func file_connection_connectionService_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_connection_connectionService_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

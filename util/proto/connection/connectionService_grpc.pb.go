@@ -44,6 +44,7 @@ type ConnectionServiceClient interface {
 	ChangeMessageNotification(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
 	ChangePostNotification(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
 	ChangeCommentNotification(ctx context.Context, in *UserConnectionRequest, opts ...grpc.CallOption) (*UserConnectionResponse, error)
+	GetAllSuggestionsByUserId(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*SuggestionsResponse, error)
 }
 
 type connectionServiceClient struct {
@@ -243,6 +244,15 @@ func (c *connectionServiceClient) ChangeCommentNotification(ctx context.Context,
 	return out, nil
 }
 
+func (c *connectionServiceClient) GetAllSuggestionsByUserId(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*SuggestionsResponse, error) {
+	out := new(SuggestionsResponse)
+	err := c.cc.Invoke(ctx, "/connection.ConnectionService/GetAllSuggestionsByUserId", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ConnectionServiceServer is the server API for ConnectionService service.
 // All implementations must embed UnimplementedConnectionServiceServer
 // for forward compatibility
@@ -269,6 +279,7 @@ type ConnectionServiceServer interface {
 	ChangeMessageNotification(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
 	ChangePostNotification(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
 	ChangeCommentNotification(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error)
+	GetAllSuggestionsByUserId(context.Context, *UserIdRequest) (*SuggestionsResponse, error)
 	mustEmbedUnimplementedConnectionServiceServer()
 }
 
@@ -338,6 +349,9 @@ func (UnimplementedConnectionServiceServer) ChangePostNotification(context.Conte
 }
 func (UnimplementedConnectionServiceServer) ChangeCommentNotification(context.Context, *UserConnectionRequest) (*UserConnectionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeCommentNotification not implemented")
+}
+func (UnimplementedConnectionServiceServer) GetAllSuggestionsByUserId(context.Context, *UserIdRequest) (*SuggestionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllSuggestionsByUserId not implemented")
 }
 func (UnimplementedConnectionServiceServer) mustEmbedUnimplementedConnectionServiceServer() {}
 
@@ -730,6 +744,24 @@ func _ConnectionService_ChangeCommentNotification_Handler(srv interface{}, ctx c
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ConnectionService_GetAllSuggestionsByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConnectionServiceServer).GetAllSuggestionsByUserId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connection.ConnectionService/GetAllSuggestionsByUserId",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConnectionServiceServer).GetAllSuggestionsByUserId(ctx, req.(*UserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ConnectionService_ServiceDesc is the grpc.ServiceDesc for ConnectionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -820,6 +852,10 @@ var ConnectionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ChangeCommentNotification",
 			Handler:    _ConnectionService_ChangeCommentNotification_Handler,
+		},
+		{
+			MethodName: "GetAllSuggestionsByUserId",
+			Handler:    _ConnectionService_GetAllSuggestionsByUserId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

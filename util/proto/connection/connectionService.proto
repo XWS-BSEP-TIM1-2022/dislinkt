@@ -142,7 +142,17 @@ service ConnectionService {
     };
   }
 
+  rpc GetAllSuggestionsByUserId(UserIdRequest) returns (SuggestionsResponse){
+    option(google.api.http) = {
+      get: "/connections/suggestions/{userId}"
+    };
+  }
 
+
+}
+
+message SuggestionsResponse{
+  repeated UserIdRequest suggestionUserIds = 1;
 }
 
 message Connection{
