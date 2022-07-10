@@ -1,6 +1,12 @@
 **/
 !/util/
 !/util/**/
+!/fluent-bit/
+!/grafana/
+!/prometheus/
+!/fluent-bit/**/
+!/grafana/**/
+!/prometheus/**/
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/go,goland
