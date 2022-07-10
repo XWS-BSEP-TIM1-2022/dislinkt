@@ -19,12 +19,42 @@ service MessageService {
       post: "/notifications"
     };
   }
+
+  rpc GetAllChatsForUser(UserIdRequest) returns (GetAllChatsResponse){
+    option(google.api.http) = {
+      get: "/chats/{userId}"
+    };
+  }
+
+  rpc CreateChat(NewChatRequest) returns (GetChatResponse){
+    option(google.api.http) = {
+      post: "/chats"
+      body: "chat"
+    };
+  }
+
+  rpc GetAllMessagesForUser(ChatIdRequest) returns (GetAllMessagesResponse){
+    option(google.api.http) = {
+      get: "/messages/{chatId}"
+    };
+  }
+
+  rpc CreateMessage(NewMessageRequest) returns (GetMessageResponse){
+    option(google.api.http) = {
+      post: "/messages"
+      body: "message"
+    };
+  }
 }
 
 message EmptyRequest{}
 
 message UserIdRequest{
   string userId = 1;
+}
+
+message ChatIdRequest{
+  string chatId = 1;
 }
 
 message GetAllResponse{
@@ -35,6 +65,22 @@ message GetResponse{
   Notification notification = 1;
 }
 
+message GetAllChatsResponse{
+  repeated Chat chat = 1;
+}
+
+message GetChatResponse{
+  Chat chat = 1;
+}
+
+message GetAllMessagesResponse{
+  repeated Message messages = 1;
+}
+
+message GetMessageResponse{
+  Message message = 1;
+}
+
 message Notification{
   string id = 1;
   string userId = 2;
@@ -43,7 +89,31 @@ message Notification{
   string date = 5;
 }
 
+message Chat{
+  string id = 1;
+  string userId = 2;
+  string fromUserId = 3;
+  string username = 4;
+  string fromUsername = 5;
+}
+
+message Message{
+  string id = 1;
+  string chatId = 2;
+  string message = 3;
+  string date = 4;
+  string username = 5;
+}
+
 message NewNotificationRequest{
   Notification notification = 1;
   int32 notificationType = 2; //1 = message, 2 = post, 3 = comment
+}
+
+message NewChatRequest{
+  Chat chat = 1;
+}
+
+message NewMessageRequest{
+  Message message = 1;
 }

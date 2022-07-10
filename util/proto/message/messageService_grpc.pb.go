@@ -24,6 +24,10 @@ const _ = grpc.SupportPackageIsVersion7
 type MessageServiceClient interface {
 	GetAllNotifications(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
 	CreateNotification(ctx context.Context, in *NewNotificationRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	GetAllChatsForUser(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*GetAllChatsResponse, error)
+	CreateChat(ctx context.Context, in *NewChatRequest, opts ...grpc.CallOption) (*GetChatResponse, error)
+	GetAllMessagesForUser(ctx context.Context, in *ChatIdRequest, opts ...grpc.CallOption) (*GetAllMessagesResponse, error)
+	CreateMessage(ctx context.Context, in *NewMessageRequest, opts ...grpc.CallOption) (*GetMessageResponse, error)
 }
 
 type messageServiceClient struct {
@@ -52,12 +56,52 @@ func (c *messageServiceClient) CreateNotification(ctx context.Context, in *NewNo
 	return out, nil
 }
 
+func (c *messageServiceClient) GetAllChatsForUser(ctx context.Context, in *UserIdRequest, opts ...grpc.CallOption) (*GetAllChatsResponse, error) {
+	out := new(GetAllChatsResponse)
+	err := c.cc.Invoke(ctx, "/message.MessageService/GetAllChatsForUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageServiceClient) CreateChat(ctx context.Context, in *NewChatRequest, opts ...grpc.CallOption) (*GetChatResponse, error) {
+	out := new(GetChatResponse)
+	err := c.cc.Invoke(ctx, "/message.MessageService/CreateChat", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageServiceClient) GetAllMessagesForUser(ctx context.Context, in *ChatIdRequest, opts ...grpc.CallOption) (*GetAllMessagesResponse, error) {
+	out := new(GetAllMessagesResponse)
+	err := c.cc.Invoke(ctx, "/message.MessageService/GetAllMessagesForUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageServiceClient) CreateMessage(ctx context.Context, in *NewMessageRequest, opts ...grpc.CallOption) (*GetMessageResponse, error) {
+	out := new(GetMessageResponse)
+	err := c.cc.Invoke(ctx, "/message.MessageService/CreateMessage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MessageServiceServer is the server API for MessageService service.
 // All implementations must embed UnimplementedMessageServiceServer
 // for forward compatibility
 type MessageServiceServer interface {
 	GetAllNotifications(context.Context, *UserIdRequest) (*GetAllResponse, error)
 	CreateNotification(context.Context, *NewNotificationRequest) (*GetResponse, error)
+	GetAllChatsForUser(context.Context, *UserIdRequest) (*GetAllChatsResponse, error)
+	CreateChat(context.Context, *NewChatRequest) (*GetChatResponse, error)
+	GetAllMessagesForUser(context.Context, *ChatIdRequest) (*GetAllMessagesResponse, error)
+	CreateMessage(context.Context, *NewMessageRequest) (*GetMessageResponse, error)
 	mustEmbedUnimplementedMessageServiceServer()
 }
 
@@ -70,6 +114,18 @@ func (UnimplementedMessageServiceServer) GetAllNotifications(context.Context, *U
 }
 func (UnimplementedMessageServiceServer) CreateNotification(context.Context, *NewNotificationRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateNotification not implemented")
+}
+func (UnimplementedMessageServiceServer) GetAllChatsForUser(context.Context, *UserIdRequest) (*GetAllChatsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllChatsForUser not implemented")
+}
+func (UnimplementedMessageServiceServer) CreateChat(context.Context, *NewChatRequest) (*GetChatResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateChat not implemented")
+}
+func (UnimplementedMessageServiceServer) GetAllMessagesForUser(context.Context, *ChatIdRequest) (*GetAllMessagesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllMessagesForUser not implemented")
+}
+func (UnimplementedMessageServiceServer) CreateMessage(context.Context, *NewMessageRequest) (*GetMessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMessage not implemented")
 }
 func (UnimplementedMessageServiceServer) mustEmbedUnimplementedMessageServiceServer() {}
 
@@ -120,6 +176,78 @@ func _MessageService_CreateNotification_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MessageService_GetAllChatsForUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).GetAllChatsForUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.MessageService/GetAllChatsForUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).GetAllChatsForUser(ctx, req.(*UserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageService_CreateChat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NewChatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).CreateChat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.MessageService/CreateChat",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).CreateChat(ctx, req.(*NewChatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageService_GetAllMessagesForUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChatIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).GetAllMessagesForUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.MessageService/GetAllMessagesForUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).GetAllMessagesForUser(ctx, req.(*ChatIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageService_CreateMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NewMessageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).CreateMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.MessageService/CreateMessage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).CreateMessage(ctx, req.(*NewMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MessageService_ServiceDesc is the grpc.ServiceDesc for MessageService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +262,22 @@ var MessageService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateNotification",
 			Handler:    _MessageService_CreateNotification_Handler,
+		},
+		{
+			MethodName: "GetAllChatsForUser",
+			Handler:    _MessageService_GetAllChatsForUser_Handler,
+		},
+		{
+			MethodName: "CreateChat",
+			Handler:    _MessageService_CreateChat_Handler,
+		},
+		{
+			MethodName: "GetAllMessagesForUser",
+			Handler:    _MessageService_GetAllMessagesForUser_Handler,
+		},
+		{
+			MethodName: "CreateMessage",
+			Handler:    _MessageService_CreateMessage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
